@@ -141,6 +141,8 @@ CREATE TABLE plano_beneficio (
     id INT PRIMARY KEY AUTO_INCREMENT,
     plano_id INT NOT NULL,
     beneficio_id INT NOT NULL,
+    val_numerico INT NULL,
+    val_boolean BOOLEAN NULL,
 
 	CONSTRAINT fk_plano_beneficio_plano
     FOREIGN KEY (plano_id) REFERENCES plano(id),
