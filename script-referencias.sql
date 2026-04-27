@@ -58,5 +58,5 @@ INSERT INTO comentario_tipo(nome)
     VALUES
     ('comentario')
     ('resposta'),
-    ('sugestao'),
+    ('sugestao');
     

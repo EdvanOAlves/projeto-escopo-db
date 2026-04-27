@@ -53,7 +53,7 @@ CREATE TABLE convite_status (
 CREATE TABLE convite (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(150) NOT NULL,
-    criado_em TIMESTAMP NOT NULL, DEFAULT CURRENT_TIMESTAMP
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     projeto_id INT NOT NULL,
     destinatario_id INT NOT NULL, -- destino
     nivel_acesso_id INT NOT NULL,
