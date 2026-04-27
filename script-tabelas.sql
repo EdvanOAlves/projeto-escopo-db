@@ -28,7 +28,7 @@ CREATE TABLE projeto (
     descricao TEXT NULL,
     status BOOLEAN DEFAULT TRUE,
     criador_id INT NOT NULL,
-    data_criacao TIMESTAMP NOT NULL,
+    data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     CONSTRAINT fk_projeto_usuario_criador
     FOREIGN KEY (criador_id) REFERENCES usuario(id)
@@ -53,20 +53,20 @@ CREATE TABLE convite_status (
 CREATE TABLE convite (
     id INT PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(150) NOT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL, DEFAULT CURRENT_TIMESTAMP
     projeto_id INT NOT NULL,
-    usuario_id INT NOT NULL, -- destino
+    destinatario_id INT NOT NULL, -- destino
     nivel_acesso_id INT NOT NULL,
-    convidado_por_id INT NOT NULL, -- remetente
-    convite_status_id INT NOT NULL,
+    remetente_id INT NOT NULL, -- remetente
+    convite_status_id INT NOT NULL DEFAULT 1, -- Por padrao, quando criar um convite ele vai estar como pendente
     
     -- Relacionamentos
 	CONSTRAINT fk_convite_projeto
     FOREIGN KEY (projeto_id) REFERENCES projeto(id),
     CONSTRAINT convite_usuario_destino
-    FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    FOREIGN KEY (destinatario_id) REFERENCES usuario(id),
     CONSTRAINT convite_usuario_remetente
-    FOREIGN KEY (convidado_por_id) REFERENCES usuario(id),
+    FOREIGN KEY (remetente_id) REFERENCES usuario(id),
     
     -- Referencias
     CONSTRAINT fk_convite_nivel_acesso
@@ -121,11 +121,11 @@ CREATE TABLE beneficio (
 -- Assinatura
 CREATE TABLE assinatura (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    data_inicio TIMESTAMP NOT NULL,
+    data_inicio TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     data_fim TIMESTAMP NULL,
     usuario_id INT NOT NULL,
     plano_id INT NOT NULL,
-    assinatura_status_id INT NOT NULL,
+    assinatura_status_id INT NOT NULL DEFAULT 1,
     
     -- Relacionamentos
     CONSTRAINT fk_assinatura_usuario
@@ -160,7 +160,7 @@ CREATE TABLE reuniao (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(150) NOT NULL,
     transcricao TEXT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     projeto_id INT NOT NULL,
 
     FOREIGN KEY (projeto_id) REFERENCES projeto(id)
@@ -217,7 +217,7 @@ CREATE TABLE link (
 CREATE TABLE registro (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(150) NOT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     conteudo TEXT NOT NULL,
     criador_id INT NOT NULL,
     projeto_id INT NOT NULL,
@@ -247,7 +247,7 @@ CREATE TABLE categoria (
 CREATE TABLE documento (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(150) NOT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     categoria_id INT NOT NULL,
     deletado_em TIMESTAMP NULL,
 
@@ -260,7 +260,7 @@ CREATE TABLE documento (
 CREATE TABLE documento_versao (
     id INT PRIMARY KEY AUTO_INCREMENT,
     conteudo TEXT NOT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     criador_id INT NOT NULL,
     documento_id INT NOT NULL,
 
@@ -285,12 +285,12 @@ CREATE TABLE comentario_tipo (
 CREATE TABLE comentario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     conteudo TEXT NOT NULL,
-    criado_em TIMESTAMP NOT NULL,
+    criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     parent_id INT NULL,
     registro_referencia_id INT NULL,
     criador_id INT NOT NULL,
     documento_id INT NOT NULL,
-    comentario_tipo_id INT NOT NULL,
+    comentario_tipo_id INT NOT NULL DEFAULT 1, -- por padrão o comentario_tipo vai ser id 1 (comentario)
 
 	-- Referencias
 	CONSTRAINT fk_comentario_tipo_comentario
@@ -311,7 +311,7 @@ CREATE TABLE comentario (
 	-- ======================
  CREATE TABLE aprovacao(
 	id INT PRIMARY KEY AUTO_INCREMENT,
-    data TIMESTAMP NOT NULL,
+    data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     documento_id INTEGER NOT NULL,
     usuario_id INTEGER NOT NULL,
     
@@ -330,7 +330,7 @@ CREATE TABLE comentario (
 CREATE TABLE notificacao (
     id INT PRIMARY KEY AUTO_INCREMENT,
     descricao VARCHAR(300) NOT NULL,
-    data TIMESTAMP NOT NULL,
+    data TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     aberto BOOLEAN DEFAULT FALSE,
     comentario_id INT NOT NULL,
     usuario_id INT NOT NULL, -- Destinatario
