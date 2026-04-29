@@ -55,7 +55,7 @@ CREATE TABLE convite (
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     projeto_id INT NOT NULL,
     destinatario_id INT NOT NULL, -- destino
-    nivel_acesso_id INT NOT NULL,
+    nivel_acesso_id INT NULL, -- nulo por conta do "convite" notificação de que um convite foi aceito
     remetente_id INT NOT NULL, -- remetente
     convite_status_id INT NOT NULL DEFAULT 1, -- Por padrao, quando criar um convite ele vai estar como pendente
     
