@@ -11,7 +11,8 @@ INSERT INTO convite_status(nome) VALUES
     ('recusado'),
     ('expirado'),
     ('não-lido'),
-    ('lido');
+    ('lido'),
+    ('aceito');
 
 INSERT INTO plano(nome, descricao, preco)
     VALUES
