@@ -57,7 +57,7 @@ INSERT INTO tipo_link(nome)
 
 INSERT INTO comentario_tipo(nome)
     VALUES
-    ('comentario')
+    ('comentario'),
     ('resposta'),
     ('sugestao');
     
