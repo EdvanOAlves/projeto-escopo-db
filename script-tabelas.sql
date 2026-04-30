@@ -26,9 +26,9 @@ CREATE TABLE projeto (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100) NOT NULL,
     descricao TEXT NULL,
+    data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT TRUE,
     criador_id INT NOT NULL,
-    data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     CONSTRAINT fk_projeto_usuario_criador
     FOREIGN KEY (criador_id) REFERENCES usuario(id)
@@ -84,9 +84,11 @@ CREATE TABLE usuario_projeto (
     projeto_id INT NOT NULL,
     nivel_acesso_id INT NOT NULL,
 
-	CONSTRAINT FK
+	CONSTRAINT fk_usuario_projeto_usuario
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    CONSTRAINT fk_usuario_projeto_projeto
     FOREIGN KEY (projeto_id) REFERENCES projeto(id),
+    CONSTRAINT fk_usuario_projeto_nivel_acesso
     FOREIGN KEY (nivel_acesso_id) REFERENCES nivel_acesso(id)
 );
 -- ----------------------
@@ -162,6 +164,7 @@ CREATE TABLE reuniao (
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     projeto_id INT NOT NULL,
 
+	CONSTRAINT fk_reuniao_projeto
     FOREIGN KEY (projeto_id) REFERENCES projeto(id)
 );
 
@@ -170,7 +173,10 @@ CREATE TABLE reuniao_usuario (
     usuario_id INT NOT NULL,
     reuniao_id INT NOT NULL,
 
+    CONSTRAINT fk_reuniao_usuario_usuario
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
+    
+    CONSTRAINT fk_reuniao_usuario_reuniao
     FOREIGN KEY (reuniao_id) REFERENCES reuniao(id)
 );
 
@@ -180,6 +186,7 @@ CREATE TABLE convidado_reuniao (
     cargo VARCHAR(100) NULL,
     reuniao_id INT NOT NULL,
 
+	CONSTRAINT fk_convidado_reuniao_reuniao
     FOREIGN KEY (reuniao_id) REFERENCES reuniao(id)
 );
 

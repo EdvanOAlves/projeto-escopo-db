@@ -26,4 +26,38 @@ CREATE TRIGGER trg_projeto_criado
         VALUES (NEW.criador_id, NEW.id, 1);
     END$$
     
+CREATE TRIGGER trg_comentario_notificacao
+AFTER INSERT ON comentario
+FOR EACH ROW
+BEGIN
+    INSERT INTO notificacao (descricao, comentario_id, usuario_id)
+    SELECT DISTINCT
+        CONCAT(
+            usuario.nome,
+            ' comentou no documento "',
+            documento.titulo,
+            '"'
+        ) AS descricao,
+        NEW.id,
+        documento_versao.criador_id
+    FROM documento_versao
+    JOIN documento ON documento.id = documento_versao.documento_id
+    JOIN usuario usuario ON usuario.id = NEW.criador_id
+    WHERE documento_versao.documento_id = NEW.documento_id
+    AND documento_versao.criador_id != NEW.criador_id;
+END$$
+
+CREATE TRIGGER trg_usuario_soft_delete
+AFTER UPDATE ON usuario
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 0 IS NOT NULL AND OLD.deletado_em IS NULL THEN
+        UPDATE usuario
+        SET deletado_em CURRENT_DATE
+        WHERE id = NEW.id;
+        -- Seria interesante deixar uma foto reutilizavel pra isso, já serviria de indicação visual para os usuarios
+    END IF;
+    DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
+END;
+
 DELIMITER ;
