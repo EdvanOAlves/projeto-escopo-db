@@ -1,4 +1,5 @@
 
+-- View para lista de projetos
 CREATE VIEW vw_projetos_com_usuarios AS
 SELECT 
 	projeto.id, projeto.titulo, projeto.descricao, 

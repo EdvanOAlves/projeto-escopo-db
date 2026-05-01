@@ -1,15 +1,20 @@
 -- USUARIOS
 INSERT INTO usuario(nome, email, senha) VALUES
+('Ana Livia', 'ana@email.com', '123'),
+('Larissa Lemos', 'larissa@email.com', '123'),
+('Marcos Santos', 'marcos@email.com', '123'),
+('Carlos Ribeiro', 'carlos@email.com', '123'),
 ('João Silva', 'joao@email.com', '123'),
 ('Maria Souza', 'maria@email.com', '123'),
-('Carlos Lima', 'carlos@email.com', '123'),
-('Marcos Ferreira', 'marcos@email.com', '123'),
-('Ana Costa', 'ana@email.com', '123');
+('Bernardo Pereira', 'bernardo@email.com', '123'),
+('Manuela Ferreira', 'manuela@email.com', '123'),
+('Amanda Costa', 'amanda@email.com', '123');
 
 -- PROJETOS
 INSERT INTO projeto(titulo, descricao, criador_id) VALUES
 ('Sistema de Gestão', 'Plataforma web para gestão de requisitos', 1),
-('App Delivery', 'Aplicativo mobile de delivery', 2);
+('App Delivery', 'Aplicativo mobile de delivery', 5),
+('Hackaton 2026', 'Plataforma para resolver o desafio proposto pela banca', 6);
 
 -- USUARIO_PROJETO
 INSERT INTO usuario_projeto(usuario_id, projeto_id, nivel_acesso_id) VALUES
@@ -18,24 +23,135 @@ INSERT INTO usuario_projeto(usuario_id, projeto_id, nivel_acesso_id) VALUES
 (4, 2, 3); -- Ana dev
 
 -- CONVITES
-INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id, convite_status_id) VALUES
-(1, 4, 3, 1, 1), -- Ana convidada
-(2, 3, 2, 2, 6); -- Carlos aceitou
+INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id) VALUES
+(1, 2, 1, 1),
+(1, 3, 2, 1),
+(1, 4, 3, 1),
+(1, 5, 4, 1),
+(2, 1, 2, 5),
+(2, 6, 2, 5),
+(2, 4, 3, 5),
+(2, 7, 4, 5),
+(3, 8, 1, 6),
+(3, 7, 2, 6),
+(3, 5, 3, 6),
+(3, 3, 4, 6);
+
+SELECT * from convite;
+-- Aceitando alguns convites
+UPDATE convite
+SET convite_status_id = 6
+WHERE id IN (1, 3, 4, 5, 7, 9, 10, 12);
+SELECT * from convite;
 
 -- CATEGORIAS (SETORES)
 INSERT INTO categoria(titulo, projeto_id) VALUES
 ('Plataforma Web', 1),
-('Aplicativo Mobile', 2);
+('Aplicativo Mobile', 1),
+('Documentos Gerais', 2),
+('Aplicativo Usuarios', 2),
+('Aplicativo Entregadores', 2),
+('Banco de Dados', 3),
+('Back-end',3),
+('Front-end',  3);
 
+SELECT * from documento;
 -- DOCUMENTOS
 INSERT INTO documento(titulo, categoria_id) VALUES
+-- Plataforma Web (1)
 ('Documento de Requisitos', 1),
-('Especificação Mobile', 2);
+('Manual do Usuário Web', 1),
 
+-- Aplicativo Mobile (2)
+('Especificação Mobile', 2),
+('Checklist de Testes Mobile', 2),
+
+-- Documentos Gerais (3)
+('Plano de Projeto', 3),
+('Cronograma', 3),
+('Relatório de Progresso', 3),
+
+-- Aplicativo Usuarios (4)
+('Fluxo de Navegação do Usuário', 4),
+('Casos de Uso - Usuário', 4),
+
+-- Aplicativo Entregadores (5)
+('Fluxo de Entregas', 5),
+('Casos de Uso - Entregador', 5),
+
+-- Banco de Dados (6)
+('Modelo Entidade-Relacionamento', 6),
+('Dicionário de Dados', 6),
+
+-- Back-end (7)
+('Documentação da API', 7),
+('Arquitetura do Sistema', 7),
+
+-- Front-end (8)
+('Guia de Componentes UI', 8),
+('Padrões de Estilo', 8);
+
+SELECT * from documento;
 -- DOCUMENTO_VERSAO
-INSERT INTO documento_versao(conteudo, criador_id, documento_id) VALUES
-('Versão inicial dos requisitos...', 2, 1),
-('Primeira versão do app...', 4, 2);
+INSERT INTO documento_versao (conteudo, criador_id, documento_id) VALUES
+-- Documento 1
+('v1 - Levantamento inicial de requisitos.', 1, 1),
+('v2 - Ajustes após reunião com cliente.', 2, 1),
+('v3 - Versão final aprovada.', 3, 1),
+
+-- Documento 2
+('v1 - Estrutura inicial do app mobile.', 1, 2),
+('v2 - Inclusão de novas funcionalidades.', 2, 2),
+
+-- Documento 3
+('v1 - Protótipo inicial das telas web.', 2, 3),
+
+-- Documento 4
+('v1 - Manual básico do usuário.', 3, 4),
+('v2 - Manual revisado com melhorias.', 1, 4),
+
+-- Documento 5
+('v1 - Guia de instalação mobile.', 1, 5),
+
+-- Documento 6
+('v1 - Relatório de testes iniciais.', 2, 6),
+('v2 - Correções após testes.', 3, 6),
+
+-- Documento 7
+('v1 - Planejamento do projeto.', 1, 7),
+
+-- Documento 8
+('v1 - Cronograma inicial.', 2, 8),
+('v2 - Cronograma atualizado.', 3, 8),
+
+-- Documento 9
+('v1 - Relatório de progresso semanal.', 3, 9),
+
+-- Documento 10
+('v1 - Fluxo de navegação do usuário.', 1, 10),
+
+-- Documento 11
+('v1 - Casos de uso do usuário.', 2, 11),
+
+-- Documento 12
+('v1 - Fluxo de entregas.', 3, 12),
+
+-- Documento 13
+('v1 - Casos de uso do entregador.', 1, 13),
+
+-- Documento 14
+('v1 - Modelo ER inicial.', 2, 14),
+
+-- Documento 15
+('v1 - Dicionário de dados.', 3, 15),
+
+-- Documento 16
+('v1 - Documentação da API.', 1, 16),
+('v2 - Inclusão de novos endpoints.', 2, 16),
+
+-- Documento 17
+('v1 - Arquitetura backend.', 2, 17);
+
 
 -- REGISTROS
 INSERT INTO registro(titulo, conteudo, criador_id, projeto_id) VALUES
