@@ -29,6 +29,7 @@ INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id) 
 (1, 4, 3, 1),
 (1, 5, 4, 1),
 (2, 1, 2, 5),
+(2, 3, 2, 5),
 (2, 6, 2, 5),
 (2, 4, 3, 5),
 (2, 7, 4, 5),
@@ -97,7 +98,8 @@ INSERT INTO documento_versao (conteudo, criador_id, documento_id) VALUES
 -- Documento 1
 ('v1 - Levantamento inicial de requisitos.', 1, 1),
 ('v2 - Ajustes após reunião com cliente.', 2, 1),
-('v3 - Versão final aprovada.', 3, 1),
+('v3 - Redefinindo ordem.', 3, 1),
+('v4 - Versão final aprovada', 1, 1),
 
 -- Documento 2
 ('v1 - Estrutura inicial do app mobile.', 1, 2),
