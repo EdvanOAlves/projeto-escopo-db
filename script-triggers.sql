@@ -60,4 +60,12 @@ BEGIN
     DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
 END;
 
+CREATE TRIGGER trg_registro_update
+AFTER UPDATE ON registro
+FOR EACH ROW
+BEGIN
+	UPDATE registro
+    SET atualizado_em CURRENT_DATE
+    WHERE id = NEW.id
+END;
 DELIMITER ;

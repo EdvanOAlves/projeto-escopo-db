@@ -224,6 +224,7 @@ CREATE TABLE registro (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(150) NOT NULL,
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMP NULL,
     conteudo TEXT NOT NULL,
     criador_id INT NOT NULL,
     projeto_id INT NOT NULL,
