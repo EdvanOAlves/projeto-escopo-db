@@ -26,7 +26,7 @@ ORDER BY criado_em DESC;
 	-- Exemplo de uso
 	-- Substitua o 0 pelo id de usuario a consultar
 	SELECT * FROM vw_convites_ativos
-	WHERE  destinatario_id = 3; -- valor a alterar
+	WHERE  destinatario_id = 0; -- valor a alterar
 
 -- View para acesso rápido de documentos recentemente editados pelo usuário
 DROP VIEW IF EXISTS vw_documentos_recentes;
@@ -53,3 +53,31 @@ ORDER BY ultima_edicao DESC;
 	WHERE criador_id = 0
 	GROUP BY id
     LIMIT 5;
+
+-- View para detalhes dos projetos (Para aquele painel do topo)
+DROP VIEW IF EXISTS vw_projetos_detalhes;
+CREATE VIEW vw_projetos_detalhes AS
+SELECT 
+	projeto.id, 
+    projeto.titulo,
+    projeto.descricao,
+    projeto.data_criacao,
+    projeto.status,
+    projeto.criador_id,
+    usuario.nome,
+    MAX(documento_versao.criado_em) AS ultima_altecarao
+    
+FROM projeto
+-- Para puxar o nome de usuario
+JOIN usuario ON usuario.id = projeto.criador_id 
+
+-- Para puxar a ultima alteração
+JOIN categoria ON categoria.projeto_id = projeto.id
+JOIN documento ON documento.categoria_id = categoria.id
+JOIN documento_versao ON documento_versao.documento_id = documento.id
+GROUP BY id;
+
+	-- Exemplo de uso
+	-- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_projetos_detalhes
+	WHERE  destinatario_id = 0; -- valor a alterar;

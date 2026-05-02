@@ -92,8 +92,9 @@ INSERT INTO documento(titulo, categoria_id) VALUES
 ('Guia de Componentes UI', 8),
 ('Padrões de Estilo', 8);
 
-SELECT * from documento;
 -- DOCUMENTO_VERSAO
+-- TODO: Seria interessante passar o timestamp manual para os inserts de testes,
+-- do jeito que tá ele cria tudo no momento que você roda o script
 INSERT INTO documento_versao (conteudo, criador_id, documento_id) VALUES
 -- Documento 1
 ('v1 - Levantamento inicial de requisitos.', 1, 1),
