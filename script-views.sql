@@ -1,8 +1,10 @@
 USE db_escopo;
+
 -- VIEW PARA LISTA DE PROJETOS (inclui fotos)
+DROP VIEW IF EXISTS vw_projetos_com_usuarios;
 CREATE VIEW vw_projetos_com_usuarios AS
-SELECT 
-	projeto.id, projeto.titulo, projeto.descricao, 
+SELECT
+	projeto.id, projeto.titulo, projeto.descricao,
 	GROUP_CONCAT(usuario.foto_perfil) AS foto_usuarios
 FROM projeto
 JOIN usuario_projeto ON usuario_projeto.projeto_id = projeto.id
@@ -18,7 +20,10 @@ GROUP BY projeto.id, projeto.titulo, projeto.descricao;
 		WHERE usuario_id = 0 -- valor a alterar
 	);
 
+-- ---
+
 -- VIEW PARA CONVITES PENDENTES  E NÃO LIDOS
+DROP VIEW IF EXISTS vw_convites_ativos;
 CREATE VIEW vw_convites_ativos AS
 SELECT * FROM convite
 WHERE convite_status_id = 1 OR convite_status_id = 4
@@ -29,11 +34,13 @@ ORDER BY criado_em DESC;
 	SELECT * FROM vw_convites_ativos
 	WHERE  destinatario_id = 0; -- valor a alterar
 
+-- ---
+
 -- VIEW PARA ACESSO RÁPIDO DE DOCUMENTOS RECENTEMENTE EDITADOS PELO USUARIO
 DROP VIEW IF EXISTS vw_documentos_recentes;
 CREATE VIEW vw_documentos_recentes AS
-SELECT 
-	documento.id, 
+SELECT
+	documento.id,
     projeto.titulo AS projeto,
     categoria.titulo AS categoria,
 	documento.titulo AS documento,
@@ -48,18 +55,20 @@ ORDER BY ultima_edicao DESC;
 	-- Exemplo de uso
 	-- Substitua o 0 pelo id de usuario a consultar
     -- Substitua o 5 pela quantidade de documentos que você quer puxar
-	SELECT 
-		id, projeto, categoria, documento, MAX(ultima_edicao) AS ultima_edicao 
+	SELECT
+		id, projeto, categoria, documento, MAX(ultima_edicao) AS ultima_edicao
     FROM vw_documentos_recentes
 	WHERE criador_id = 0
 	GROUP BY id
     LIMIT 5;
 
+-- ---
+
 -- View para detalhes dos projetos (Para aquele painel do topo)
 DROP VIEW IF EXISTS vw_projetos_detalhes;
 CREATE VIEW vw_projetos_detalhes AS
-SELECT 
-	projeto.id, 
+SELECT
+	projeto.id,
     projeto.titulo,
     projeto.descricao,
     projeto.status,
@@ -67,10 +76,10 @@ SELECT
     projeto.criador_id,
     usuario.nome AS nome_responsavel,
     MAX(documento_versao.criado_em) AS ultima_atualizacao
-    
+
 FROM projeto
 -- Para puxar o nome de usuario
-JOIN usuario ON usuario.id = projeto.criador_id 
+JOIN usuario ON usuario.id = projeto.criador_id
 
 -- Para puxar a ultima alteração
 JOIN categoria ON categoria.projeto_id = projeto.id
@@ -80,11 +89,12 @@ GROUP BY id;
 
 	-- Exemplo de uso
 	-- Substitua os 0s pelos ids de projeto e de usuario a consultar
-	SELECT vw.id, vw.titulo, descricao, vw.status, vw.data_criacao, vw.criador_id, vw.nome_responsavel, vw.ultima_atualizacao, usuario_projeto.nivel_acesso_id 
+	SELECT vw.id, vw.titulo, descricao, vw.status, vw.data_criacao, vw.criador_id, vw.nome_responsavel, vw.ultima_atualizacao, usuario_projeto.nivel_acesso_id
     FROM vw_projetos_detalhes AS vw
     JOIN usuario_projeto ON vw.id = usuario_projeto.projeto_id
 	WHERE  projeto_id = 0 AND usuario_id = 0; -- valores a alterar;
 
+-- ---
 
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
@@ -100,3 +110,104 @@ GROUP BY reuniao_id;
     -- -- Substitua o 0 pelo id de projeto a consultar
 	SELECT * FROM vw_reunioes_com_usuarios
 	WHERE projeto_id = 0; -- valor a alterar
+
+-- ---
+
+-- VIEW DA TELA DE DOCUMENTOS DO PROJETO, que retorna um array de categorias e dentro de cada uma tem um array de documentos
+DROP VIEW IF EXISTS vw_categorias_com_documentos;
+CREATE VIEW vw_categorias_com_documentos AS
+SELECT
+	c.id,
+	c.titulo AS nome,
+    c.projeto_id,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+		  JSON_OBJECT(
+			'id', d.id,
+			'titulo', d.titulo,
+            'quantidade_versoes', (SELECT count(id) FROM documento_versao dv WHERE dv.documento_id = d.id),
+            'ultima_alteracao', (SELECT dv.criado_em FROM documento_versao dv WHERE dv.documento_id = d.id ORDER BY criado_em DESC LIMIT 1)
+		  )
+		) FROM documento d
+        WHERE d.categoria_id = c.id
+	), JSON_ARRAY()) AS documentos
+FROM categoria c;
+
+-- Exemplo de utilização:
+SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
+
+-- ---
+
+-- VIEW DE DETALHES DE REUNIOES
+DROP VIEW IF EXISTS vw_reuniao_detalhes;
+CREATE VIEW vw_reuniao_detalhes AS
+SELECT
+	r.id,
+	r.titulo,
+	r.criado_em,
+	r.projeto_id,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+		  JSON_OBJECT(
+			'id', l.id,
+			'url', l.url,
+            'nome', l.nome,
+            'tipo_link', (SELECT tl.nome FROM tipo_link tl WHERE tl.id = l.tipo_link_id)
+		  )
+		) FROM link l
+        WHERE l.reuniao_id = r.id
+	), JSON_ARRAY()) AS links,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+		  JSON_OBJECT(
+			'id', cr.id,
+			'cargo', cr.cargo,
+            'nome', cr.nome
+		  )
+		) FROM convidado_reuniao cr
+        WHERE cr.reuniao_id = r.id
+	), JSON_ARRAY()) AS convidados,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+		  JSON_OBJECT(
+			'id', u.id,
+			'cargo', ru.cargo,
+            'nome', u.nome,
+            'foto_perfil', u.foto_perfil
+		  )
+		) FROM reuniao_usuario ru
+        JOIN usuario u ON u.id = ru.usuario_id
+        JOIN nivel_acesso na ON na.id = ru.cargo
+        WHERE ru.reuniao_id = r.id
+	), JSON_ARRAY()) AS usuarios
+FROM reuniao r;
+
+-- Exemplo de utilização:
+SELECT * FROM vw_reuniao_detalhes WHERE id = 1 AND projeto_id = 1;
+
+-- ---
+
+-- VIEW DE DETALHES DE DOCUMENTO
+DROP VIEW IF EXISTS vw_documento_detalhes;
+CREATE VIEW vw_documento_detalhes AS
+SELECT
+	d.id,
+	d.titulo,
+	c.titulo AS categoria,
+    p.titulo AS projeto,
+    dv.conteudo,
+    dv.criado_em AS ultima_alteracao
+FROM documento d
+JOIN categoria c ON d.categoria_id = c.id
+JOIN projeto p ON p.id = c.projeto_id
+JOIN documento_versao dv ON dv.documento_id = d.id
+WHERE dv.id = (
+    SELECT id
+    FROM documento_versao dv2
+    WHERE dv2.documento_id = d.id
+    ORDER BY dv2.criado_em DESC, dv2.id DESC
+    LIMIT 1
+);
+
+-- Exemplo de utilização:
+SELECT * FROM vw_documento_detalhes WHERE id = 1;
