@@ -84,3 +84,19 @@ GROUP BY id;
     FROM vw_projetos_detalhes AS vw
     JOIN usuario_projeto ON vw.id = usuario_projeto.projeto_id
 	WHERE  projeto_id = 0 AND usuario_id = 0; -- valores a alterar;
+
+
+-- Para a lista de reuniões
+DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
+CREATE VIEW vw_reunioes_com_usuarios AS
+SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
+	GROUP_CONCAT(usuario.foto_perfil) AS foto_usuarios
+FROM reuniao
+JOIN reuniao_usuario ON reuniao_usuario.reuniao_id = reuniao.id
+JOIN usuario ON reuniao_usuario.usuario_id = usuario_id
+GROUP BY reuniao_id;
+
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_reunioes_com_usuarios
+	WHERE projeto_id = 0; -- valor a alterar
