@@ -21,6 +21,8 @@ FROM categoria c;
 -- Exemplo de utilização:
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
 
+-- ---
+
 -- VIEW DE DETALHES DE REUNIOES
 DROP VIEW IF EXISTS vw_reuniao_detalhes;
 CREATE VIEW vw_reuniao_detalhes AS
@@ -63,9 +65,32 @@ SELECT
         JOIN nivel_acesso na ON na.id = ru.cargo
         WHERE ru.reuniao_id = r.id
 	), JSON_ARRAY()) AS usuarios
-FROM reuniao r
-
-;
+FROM reuniao r;
 
 -- Exemplo de utilização:
 SELECT * FROM vw_reuniao_detalhes WHERE id = 1 AND projeto_id = 1;
+
+-- ---
+
+-- VIEW DE DETALHES DE DOCUMENTO
+DROP VIEW IF EXISTS vw_documento_detalhes;
+CREATE VIEW vw_documento_detalhes AS
+SELECT
+	d.id,
+	d.titulo,
+	c.titulo AS categoria,
+    p.titulo AS projeto,
+    dv.conteudo,
+    dv.criado_em AS ultima_alteracao
+FROM documento d
+JOIN categoria c ON d.categoria_id = c.id
+JOIN projeto p ON p.id = c.projeto_id
+JOIN documento_versao dv ON dv.documento_id = d.id
+WHERE dv.criado_em = (
+    SELECT MAX(dv2.criado_em)
+    FROM documento_versao dv2
+    WHERE dv2.documento_id = d.id
+);
+
+-- Exemplo de utilização:
+SELECT * FROM vw_documento_detalhes WHERE id = 1;
