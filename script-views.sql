@@ -94,7 +94,100 @@ GROUP BY id;
     JOIN usuario_projeto ON vw.id = usuario_projeto.projeto_id
 	WHERE  projeto_id = 0 AND usuario_id = 0; -- valores a alterar;
 
--- ---
+-- View para buscar a lista de participantes de um projeto
+-- o objetivo é usar essa como uma subview, ter uma view maior que vai puxar essa como um array
+DROP VIEW IF EXISTS vw_participantes_projetos;
+CREATE VIEW vw_participantes_projetos AS
+SELECT 
+	usuario.id AS usuario_id,
+    usuario.nome,
+    usuario.email,
+	usuario.foto_perfil,
+    
+    usuario_projeto.id AS usuario_projeto_id,
+    usuario_projeto.projeto_id AS projeto_id,
+    
+    usuario_projeto.nivel_acesso_id,
+    nivel_acesso.nome AS nivel_acesso
+FROM usuario_projeto
+JOIN usuario ON usuario_projeto.usuario_id = usuario.id
+JOIN nivel_acesso ON usuario_projeto.nivel_acesso_id = nivel_acesso.id
+WHERE usuario.status = 1
+ORDER BY nivel_acesso_id;
+
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_participantes_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+    
+-- View para buscar a lista de convidados pendentes de um projeto
+-- o objetivo é usar essa como uma subview, ter uma view maior que vai puxar essa como um array
+DROP VIEW IF EXISTS vw_convites_pendentes_projeto;
+CREATE VIEW vw_convites_pendentes_projetos AS
+SELECT
+    usuario.id AS usuario_id,
+    usuario.nome,
+    usuario.email,
+    usuario.foto_perfil,
+	convite.id AS convite_id,
+    convite.projeto_id AS projeto_id,
+    convite.nivel_acesso_id,
+    nivel_acesso.nome AS nivel_acesso,
+    convite.criado_em AS convidado_em
+FROM convite
+JOIN usuario ON convite.destinatario_id = usuario.id
+JOIN nivel_acesso ON convite.nivel_acesso_id = nivel_acesso.id
+WHERE convite_status_id = 1
+ORDER BY convite.nivel_acesso_id;
+
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_convites_pendentes_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+    
+-- View para buscar participantes e convites pendentes, une as duas sub-views acima
+DROP VIEW IF EXISTS vw_usuarios_projetos;
+CREATE VIEW vw_usuarios_projetos AS
+SELECT projeto.id AS projeto_id,
+	COALESCE((	
+		SELECT JSON_ARRAYAGG(
+			JSON_OBJECT(
+					'usuario_id',usuario_id,
+					'nome', nome, 
+					'email', email, 
+					'foto_perfil', foto_perfil, 
+					'usuario_projeto_id', usuario_projeto_id, 
+					'projeto_id', projeto_id, 
+					'nivel_acesso_id', nivel_acesso_id, 
+					'nivel_acesso', nivel_acesso
+			)
+		)
+		FROM vw_participantes_projetos
+		WHERE vw_participantes_projetos.projeto_id = projeto.id
+    ), JSON_ARRAY()) AS participantes,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+			JSON_OBJECT(
+					'usuario_id',usuario_id,
+					'nome', nome, 
+					'email', email, 
+					'foto_perfil', foto_perfil, 
+					'projeto_id', projeto_id, 
+					'nivel_acesso_id', nivel_acesso_id, 
+					'nivel_acesso', nivel_acesso,
+                    'convidado_em', convidado_em
+			)
+		)
+		FROM vw_convites_pendentes_projetos
+		WHERE vw_convites_pendentes_projetos.projeto_id = projeto.id
+    ), JSON_ARRAY()) AS pendentes
+FROM projeto;
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_usuarios_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+
+
 
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
