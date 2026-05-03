@@ -172,6 +172,7 @@ CREATE TABLE reuniao_usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     usuario_id INT NOT NULL,
     reuniao_id INT NOT NULL,
+    cargo VARCHAR(100) NULL,
 
     CONSTRAINT fk_reuniao_usuario_usuario
     FOREIGN KEY (usuario_id) REFERENCES usuario(id),
