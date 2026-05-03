@@ -1,26 +1,20 @@
 -- USUARIOS
-INSERT INTO usuario(nome, email, senha) VALUES
-('Ana Livia', 'ana@email.com', '123'),
-('Larissa Lemos', 'larissa@email.com', '123'),
-('Marcos Santos', 'marcos@email.com', '123'),
-('Carlos Ribeiro', 'carlos@email.com', '123'),
-('João Silva', 'joao@email.com', '123'),
-('Maria Souza', 'maria@email.com', '123'),
-('Bernardo Pereira', 'bernardo@email.com', '123'),
-('Manuela Ferreira', 'manuela@email.com', '123'),
-('Amanda Costa', 'amanda@email.com', '123');
+INSERT INTO usuario(nome, email, senha, foto_perfil) VALUES
+('Ana Livia', 'ana@email.com', '123', 'foto_ana'),
+('Larissa Lemos', 'larissa@email.com', '123', 'foto_larissa'),
+('Marcos Santos', 'marcos@email.com', '123', 'foto_marcos'),
+('Carlos Ribeiro', 'carlos@email.com', '123', 'foto_carlos'),
+('João Silva', 'joao@email.com', '123', 'foto_joao'),
+('Maria Souza', 'maria@email.com', '123', 'foto_maria'),
+('Bernardo Pereira', 'bernardo@email.com', '123', 'foto_bernardo'),
+('Manuela Ferreira', 'manuela@email.com', '123', 'foto_manuela'),
+('Amanda Costa', 'amanda@email.com', '123', 'foto_amanda');
 
 -- PROJETOS
 INSERT INTO projeto(titulo, descricao, criador_id) VALUES
 ('Sistema de Gestão', 'Plataforma web para gestão de requisitos', 1),
 ('App Delivery', 'Aplicativo mobile de delivery', 5),
 ('Hackaton 2026', 'Plataforma para resolver o desafio proposto pela banca', 6);
-
--- USUARIO_PROJETO
-INSERT INTO usuario_projeto(usuario_id, projeto_id, nivel_acesso_id) VALUES
-(2, 1, 2), -- Maria analista
-(3, 1, 3), -- Carlos dev
-(4, 2, 3); -- Ana dev
 
 -- CONVITES
 INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id) VALUES

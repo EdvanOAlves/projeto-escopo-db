@@ -10,11 +10,12 @@ JOIN usuario ON usuario_projeto.usuario_id = usuario.id
 GROUP BY projeto.id, projeto.titulo, projeto.descricao;
 
 	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de usuario a consultar
 	SELECT * FROM vw_projetos_com_usuarios
 	WHERE id IN(
 		SELECT projeto_id
 		FROM usuario_projeto
-		WHERE usuario_id = 1 -- valor a alterar
+		WHERE usuario_id = 0 -- valor a alterar
 	);
 
 -- VIEW PARA CONVITES PENDENTES  E NÃO LIDOS
@@ -28,7 +29,7 @@ ORDER BY criado_em DESC;
 	SELECT * FROM vw_convites_ativos
 	WHERE  destinatario_id = 0; -- valor a alterar
 
--- View para acesso rápido de documentos recentemente editados pelo usuário
+-- VIEW PARA ACESSO RÁPIDO DE DOCUMENTOS RECENTEMENTE EDITADOS PELO USUARIO
 DROP VIEW IF EXISTS vw_documentos_recentes;
 CREATE VIEW vw_documentos_recentes AS
 SELECT 
@@ -61,11 +62,11 @@ SELECT
 	projeto.id, 
     projeto.titulo,
     projeto.descricao,
-    projeto.data_criacao,
     projeto.status,
+    projeto.data_criacao,
     projeto.criador_id,
-    usuario.nome,
-    MAX(documento_versao.criado_em) AS ultima_altecarao
+    usuario.nome AS nome_responsavel,
+    MAX(documento_versao.criado_em) AS ultima_atualizacao
     
 FROM projeto
 -- Para puxar o nome de usuario
@@ -78,6 +79,8 @@ JOIN documento_versao ON documento_versao.documento_id = documento.id
 GROUP BY id;
 
 	-- Exemplo de uso
-	-- Substitua o 0 pelo id de projeto a consultar
-	SELECT * FROM vw_projetos_detalhes
-	WHERE  destinatario_id = 0; -- valor a alterar;
+	-- Substitua os 0s pelos ids de projeto e de usuario a consultar
+	SELECT vw.id, vw.titulo, descricao, vw.status, vw.data_criacao, vw.criador_id, vw.nome_responsavel, vw.ultima_atualizacao, usuario_projeto.nivel_acesso_id 
+    FROM vw_projetos_detalhes AS vw
+    JOIN usuario_projeto ON vw.id = usuario_projeto.projeto_id
+	WHERE  projeto_id = 0 AND usuario_id = 0; -- valores a alterar;
