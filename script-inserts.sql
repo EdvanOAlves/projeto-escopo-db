@@ -21,10 +21,10 @@ INSERT INTO usuario(nome, email, senha, foto_perfil) VALUES
 
 -- PROJETOS
 INSERT INTO projeto(titulo, descricao, criador_id, data_criacao) VALUES
-('Sistema de Gestão', 'Plataforma web para gestão de requisitos', 1, @inicio_projeto_gestao),
-('App Delivery', 'Aplicativo mobile de delivery', 5, @inicio_projeto_delivery),
-('Hackaton 2026', 'Plataforma para resolver o desafio proposto pela banca', 6, @inicio_projeto_hackaton),
-('Projeto Escopo', 'Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software', 11, @inicio_projeto_escopo);
+('Sistema de Gestão', 'Plataforma web para gestão de requisitos', 1, '25-01-01 00:00:00'),
+('App Delivery', 'Aplicativo mobile de delivery', 5, '2025-02-11 12:00:00'),
+('Hackaton 2026', 'Plataforma para resolver o desafio proposto pela banca', 6, '2025-04-01 11:00:00'),
+('Projeto Escopo', 'Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software', 11, '2026-02-27 10:30:00');
 
 -- CONVITES
 INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id, criado_em) VALUES
