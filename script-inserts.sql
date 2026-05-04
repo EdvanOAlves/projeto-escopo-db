@@ -2,21 +2,21 @@ USE db_escopo;
 
 -- USUARIOS
 INSERT INTO usuario(nome, email, senha, foto_perfil) VALUES
-('Ana Livia', 'ana@email.com', '123', 'foto_ana'),
-('Larissa Lemos', 'larissa@email.com', '123', 'foto_larissa'),
-('Marcos Santos', 'marcos@email.com', '123', 'foto_marcos'),
-('Carlos Ribeiro', 'carlos@email.com', '123', 'foto_carlos'),
-('João Silva', 'joao@email.com', '123', 'foto_joao'),
-('Maria Souza', 'maria@email.com', '123', 'foto_maria'),
-('Bernardo Pereira', 'bernardo@email.com', '123', 'foto_bernardo'),
-('Manuela Ferreira', 'manuela@email.com', '123', 'foto_manuela'),
-('Amanda Costa', 'amanda@email.com', '123', 'foto_amanda'),
-('André Roberto', 'andre@email.com', '123', 'url_foto_andré'),
-('Edvan Alves', 'edvan@email.com', '123' ,'url_foto_edvan'),
-('Nathan da Silva', 'nathan@email.com', '123', 'url_foto_nathan'),
-('Samara Rolim', 'samara@email.com', '123', 'url_foto_samara'),
-('Estagiário', 'estagiario@email.com', '123', 'url_foto_estagiario'),
-('Professor', 'professor@email.com', '123', 'url_foto_professor')
+('Ana Livia', 'ana@email.com', '12345678', 'foto_ana'),
+('Larissa Lemos', 'larissa@email.com', '12345678', 'foto_larissa'),
+('Marcos Santos', 'marcos@email.com', '12345678', 'foto_marcos'),
+('Carlos Ribeiro', 'carlos@email.com', '12345678', 'foto_carlos'),
+('João Silva', 'joao@email.com', '12345678', 'foto_joao'),
+('Maria Souza', 'maria@email.com', '12345678', 'foto_maria'),
+('Bernardo Pereira', 'bernardo@email.com', '12345678', 'foto_bernardo'),
+('Manuela Ferreira', 'manuela@email.com', '12345678', 'foto_manuela'),
+('Amanda Costa', 'amanda@email.com', '12345678', 'foto_amanda'),
+('André Roberto', 'andre@email.com', '12345678', 'url_foto_andré'),
+('Edvan Alves', 'edvan@email.com', '12345678' ,'url_foto_edvan'),
+('Nathan da Silva', 'nathan@email.com', '12345678', 'url_foto_nathan'),
+('Samara Rolim', 'samara@email.com', '12345678', 'url_foto_samara'),
+('Estagiário', 'estagiario@email.com', '12345678', 'url_foto_estagiario'),
+('Professor', 'professor@email.com', '12345678', 'url_foto_professor')
 ;
 
 -- PROJETOS
@@ -285,6 +285,8 @@ INSERT INTO reuniao_usuario(usuario_id, reuniao_id, cargo) VALUES
 (2, 1, 'Desenvolvedor Sênior'),
 (2, 2, 'Desenvolvedor Sênior'),
 (4, 2, 'Gerente de Operações');
+
+SELECT * FROM reuniao;
 
 -- CONVIDADO_REUNIAO
 INSERT INTO convidado_reuniao(nome, cargo, reuniao_id) VALUES
