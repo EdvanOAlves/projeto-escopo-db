@@ -282,26 +282,250 @@ INSERT INTO reuniao(titulo, transcricao, projeto_id, criado_em) VALUES
 -- REUNIAO_USUARIO
 INSERT INTO reuniao_usuario(usuario_id, reuniao_id, cargo) VALUES
 (1, 1, 'Gerente de Projeto'),
-(2, 1, 'Desenvolvedor Sênior'),
-(2, 2, 'Desenvolvedor Sênior'),
-(4, 2, 'Gerente de Operações');
+(2, 1, 'Desenvolvedor'),
+(3, 1, 'Analista'),
 
-SELECT * FROM reuniao;
+(1, 2, 'Gerente de Projeto'),
+(2, 2, 'Desenvolvedor'),
+(3, 2, 'Analista'),
+
+(1, 3, 'Gerente de Projeto'),
+(2, 3, 'Desenvolvedor'),
+(3, 3, 'Analista'),
+
+(1, 5, 'Gerente de Projeto'),
+(3, 5, 'Analista'),
+
+(1, 8, 'Gerente de Projeto'),
+(3, 8, 'Analista'),
+
+-- Projeto 2
+(2, 4, 'Gerente de Projeto'),
+(5, 4, 'Desenvolvedor'),
+(6, 4, 'Scrum Master'),
+
+(2, 5, 'Gerente de Projeto'),
+(5, 5, 'Desenvolvedor'),
+
+(2, 6, 'Gerente de Projeto'),
+(5, 6, 'Desenvolvedor'),
+
+-- Projeto 3
+(3, 7, 'Gerente de Projeto'),
+(1, 7, 'Stakeholder'),
+
+(3, 8, 'Gerente de Projeto'),
+(1, 8, 'Stakeholder'),
+
+(3, 9, 'Gerente de Projeto'),
+(1, 9, 'Stakeholder'),
+
+-- Projeto 4
+(4, 10, 'Gerente de Projeto'),
+(2, 10, 'Desenvolvedor'),
+
+(4, 11, 'Gerente de Projeto'),
+(2, 11, 'Desenvolvedor'),
+
+(4, 12, 'Gerente de Projeto'),
+(2, 12, 'Desenvolvedor'),
+
+-- Reforçando combinações adicionais válidas
+(1, 1, 'Stakeholder'),
+(2, 1, 'QA'),
+
+(1, 2, 'Stakeholder'),
+(3, 2, 'QA'),
+
+(1, 3, 'Stakeholder'),
+(2, 3, 'QA'),
+
+(2, 4, 'QA'),
+(5, 4, 'UX'),
+
+(2, 5, 'QA'),
+(5, 5, 'UX'),
+
+(2, 6, 'QA'),
+(5, 6, 'UX'),
+
+(3, 7, 'QA'),
+(1, 7, 'UX'),
+
+(3, 8, 'QA'),
+(1, 8, 'UX'),
+
+(3, 9, 'QA'),
+(1, 9, 'UX'),
+
+(4, 10, 'QA'),
+(2, 10, 'UX'),
+
+(4, 11, 'QA'),
+(2, 11, 'UX'),
+
+(4, 12, 'QA'),
+(2, 12, 'UX');
 
 -- CONVIDADO_REUNIAO
 INSERT INTO convidado_reuniao(nome, cargo, reuniao_id) VALUES
+-- Reunião 1
 ('Mozart', 'Compositor Musical', 1),
-('Adalberto Lima', 'Cliente Profissional', 2);
+('Ana Souza', 'Cliente', 1),
+('Carlos Mendes', 'Consultor Externo', 1),
+
+-- Reunião 2
+('Adalberto Lima', 'Cliente Profissional', 2),
+('Fernanda Alves', 'Product Owner', 2),
+
+-- Reunião 3
+('Ricardo Gomes', 'Diretor', 3),
+('Juliana Castro', 'Stakeholder', 3),
+('Patrícia Lima', 'Especialista de Negócio', 3),
+
+-- Reunião 4
+('Bruno Rocha', 'Investidor', 4),
+('Camila Freitas', 'UX Researcher', 4),
+
+-- Reunião 5
+('Eduardo Martins', 'Arquiteto de Software', 5),
+('Larissa Nogueira', 'Analista de Sistemas', 5),
+('Roberto Dias', 'Consultor Técnico', 5),
+
+-- Reunião 6
+('Marcos Vinicius', 'Scrum Advisor', 6),
+('Aline Ribeiro', 'Agile Coach', 6),
+
+-- Reunião 7
+('Thiago Fernandes', 'RH', 7),
+('Beatriz Cardoso', 'Coordenadora', 7),
+('Gustavo Pinto', 'Mentor', 7),
+
+-- Reunião 8
+('Renata Teixeira', 'Designer', 8),
+('Felipe Barros', 'Inovação', 8),
+
+-- Reunião 9
+('Sérgio Lopes', 'Cliente Final', 9),
+('Vanessa Duarte', 'Gerente Comercial', 9),
+('Hugo Carvalho', 'Consultor Estratégico', 9),
+
+-- Reunião 10
+('Daniela Moura', 'Stakeholder', 10),
+('Lucas Tavares', 'Engenheiro de Software', 10),
+
+-- Reunião 11
+('Paulo Henrique', 'Analista de Negócios', 11),
+('Tatiane Gomes', 'Cliente', 11),
+('Igor Santana', 'Consultor', 11),
+
+-- Reunião 12
+('Rafaela Campos', 'Product Manager', 12),
+('Diego Azevedo', 'Tech Lead', 12);
 
 -- LINKS
 INSERT INTO link(url, nome, tipo_link_id, reuniao_id) VALUES
-('https://meet.google.com/abc', 'Meet', 1, 1),
-('https://docs.com/doc1', 'Documento extra', 2, 2);
+-- Reunião 1
+('https://meet.google.com/aaa-111', 'Google Meet', 1, 1),
+('https://docs.google.com/document/d/aaa1', 'Documento Inicial', 2, 1),
+
+-- Reunião 2
+('https://meet.google.com/bbb-222', 'Google Meet', 1, 2),
+('https://docs.google.com/document/d/bbb2', 'Requisitos', 2, 2),
+('https://miro.com/app/board/bbb2', 'Quadro Miro', 2, 2),
+
+-- Reunião 3
+('https://meet.google.com/ccc-333', 'Google Meet', 1, 3),
+
+-- Reunião 4
+('https://teams.microsoft.com/l/meetup-join/ddd-444', 'Microsoft Teams', 1, 4),
+('https://docs.google.com/presentation/d/ddd4', 'Apresentação', 2, 4),
+
+-- Reunião 5
+('https://meet.google.com/eee-555', 'Google Meet', 1, 5),
+('https://docs.google.com/document/d/eee5', 'Funcionalidades', 2, 5),
+
+-- Reunião 6
+('https://zoom.us/j/fff-666', 'Zoom', 1, 6),
+('https://jira.com/browse/fff6', 'Tarefas Jira', 2, 6),
+('https://confluence.com/display/fff6', 'Documentação', 2, 6),
+
+-- Reunião 7
+('https://meet.google.com/ggg-777', 'Google Meet', 1, 7),
+
+-- Reunião 8
+('https://meet.google.com/hhh-888', 'Google Meet', 1, 8),
+('https://miro.com/app/board/hhh8', 'Brainstorming', 2, 8),
+
+-- Reunião 9
+('https://teams.microsoft.com/l/meetup-join/iii-999', 'Microsoft Teams', 1, 9),
+('https://docs.google.com/document/d/iii9', 'Decisão Final', 2, 9),
+
+-- Reunião 10
+('https://meet.google.com/jjj-101', 'Google Meet', 1, 10),
+('https://docs.google.com/presentation/d/jjj10', 'Kickoff Slides', 2, 10),
+
+-- Reunião 11
+('https://zoom.us/j/kkk-202', 'Zoom', 1, 11),
+('https://docs.google.com/document/d/kkk11', 'Levantamento', 2, 11),
+('https://miro.com/app/board/kkk11', 'Mapa de Requisitos', 2, 11),
+
+-- Reunião 12
+('https://teams.microsoft.com/l/meetup-join/lll-303', 'Microsoft Teams', 1, 12),
+('https://jira.com/browse/lll12', 'Planejamento Sprint', 2, 12);
 
 -- COMENTARIOS
 INSERT INTO comentario(conteudo, criador_id, documento_id, comentario_tipo_id, criado_em) VALUES
 ('Precisamos melhorar esse requisito', 3, 1, 1, '2025-01-01 00:00:00'),
 ('Sugiro adicionar login social', 4, 2, 3, '2025-01-01 00:00:00');
+
+-- Comentarios com scripts
+	-- 1. Comentários base (tipo 1)
+INSERT INTO comentario (conteudo, criado_em, criador_id, documento_id, comentario_tipo_id)
+SELECT 
+    CONCAT('Comentário sobre ', d.titulo),
+    DATE_ADD(d.criado_em, INTERVAL FLOOR(RAND()*48) HOUR),
+    up.usuario_id,
+    d.id,
+    1
+FROM documento d
+JOIN categoria c ON d.categoria_id = c.id
+JOIN usuario_projeto up ON up.projeto_id = c.projeto_id
+LIMIT 300;
+
+-- 2. Respostas (tipo 2)
+INSERT INTO comentario (conteudo, criado_em, criador_id, documento_id, comentario_tipo_id, parent_id)
+SELECT 
+    CONCAT('Resposta ao comentário ', c.id),
+    DATE_ADD(c.criado_em, INTERVAL 1 + FLOOR(RAND()*24) HOUR),
+    up.usuario_id,
+    c.documento_id,
+    2,
+    c.id
+FROM comentario c
+JOIN documento d ON d.id = c.documento_id
+JOIN categoria cat ON d.categoria_id = cat.id
+JOIN usuario_projeto up ON up.projeto_id = cat.projeto_id
+WHERE c.comentario_tipo_id = 1
+LIMIT 200;
+
+-- 3. Sugestões (tipo 3 com registro vinculado)
+INSERT INTO comentario (
+    conteudo, criado_em, criador_id, documento_id, comentario_tipo_id, registro_referencia_id
+)
+SELECT 
+    CONCAT('Sugestão baseada no registro ', r.titulo),
+    DATE_ADD(d.criado_em, INTERVAL FLOOR(RAND()*72) HOUR),
+    up.usuario_id,
+    d.id,
+    3,
+    r.id
+FROM documento d
+JOIN categoria c ON d.categoria_id = c.id
+JOIN usuario_projeto up ON up.projeto_id = c.projeto_id
+JOIN registro r ON r.projeto_id = c.projeto_id
+LIMIT 200;
+
 
 -- RESPOSTA (comentario filho)
 INSERT INTO comentario(conteudo, parent_id, criador_id, documento_id, comentario_tipo_id, criado_em) VALUES
