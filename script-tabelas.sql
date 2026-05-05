@@ -5,7 +5,7 @@ USE db_escopo;
 -- USUARIO
 -- ======================
 
--- Usuario
+-- Usuarioprojeto
 CREATE TABLE usuario (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
