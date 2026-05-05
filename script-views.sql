@@ -230,28 +230,47 @@ FROM categoria c;
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
 
 -- ---
-
-SELECT * FROM comentario;
 -- View de Comentários
+DROP VIEW IF EXISTS vw_comentarios;
+CREATE VIEW vw_comentarios AS
 SELECT comentario.id, 
 	comentario.criador_id AS autor_id, usuario.nome AS autor_nome,
-    comentario.conteudo AS conteudo, comentario.documento_id,
-    
-    (SELECT JSON_OBJECT(
-		'parent_id', comentario_respondido.parent_id,
-        'parent_autor', comentario_respondido.criador_id,
-        'parent_autor_nome', usuario.nome,
-        'parent_autor_nivel_acesso', usuario_projeto.nivel_acesso_id
-    ) FROM comentario AS comentario_respondido 
-    JOIN usuario ON comentario_respondido.criador_id = usuario.id
-    JOIN usuario_projeto ON comentario_respondido.criador_id = usuario_projeto.usuario_id
-    WHERE comentario_respondido.id = comentario.parent_id ) AS parent
-    
-    
+    comentario.conteudo AS conteudo, comentario.documento_id, comentario.criado_em,
+    COALESCE(
+		(SELECT JSON_OBJECT(
+			'parent_id', comentario_respondido.id,
+			'parent_autor_id', comentario_respondido.criador_id,
+			'parent_autor_nome', usuario_parent.nome,
+			'parent_autor_nivel_acesso_id', usuario_projeto_parent.nivel_acesso_id,
+            'parent_autor_nivel_acesso', nivel_acesso_parent.nome
+		)
+        FROM comentario AS comentario_respondido 
+		JOIN usuario AS usuario_parent ON comentario_respondido.criador_id = usuario_parent.id
+		JOIN usuario_projeto AS usuario_projeto_parent ON comentario_respondido.criador_id = usuario_projeto_parent.usuario_id
+        JOIN nivel_acesso AS nivel_acesso_parent ON usuario_projeto_parent.nivel_acesso_id = nivel_acesso_parent.id
+		WHERE comentario_respondido.id = comentario.parent_id AND usuario_projeto_parent.projeto_id = projeto.id), JSON_OBJECT()
+	)AS parent,
+    COALESCE(
+		(SELECT JSON_OBJECT(
+			'registro_id', registro.id,
+			'registro_titulo', registro.titulo
+		)
+        FROM registro 
+		WHERE comentario.registro_referencia_id = registro.id ), JSON_OBJECT()
+	)AS registro
 FROM comentario
 JOIN usuario ON comentario.criador_id = usuario.id
-WHERE comentario.id = 1
+JOIN documento ON comentario.documento_id = documento.id
+JOIN categoria ON documento.categoria_id = categoria.id
+JOIN projeto ON categoria.projeto_id = projeto.id
+ORDER BY criado_em DESC
 ;
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de documento a consultar
+	SELECT * FROM vw_comentarios
+	WHERE documento_id = 0; -- valor a alterar
+
+
 -- ---
 
 -- VIEW DE DETALHES DE REUNIOES

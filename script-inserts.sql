@@ -51,7 +51,7 @@ INSERT INTO convite(projeto_id, destinatario_id, nivel_acesso_id, remetente_id, 
 -- Aceitando alguns convites
 UPDATE convite
 SET convite_status_id = 6
-WHERE id IN (1, 3, 4, 5, 7, 9, 10, 12);
+WHERE id IN (1, 2, 3, 4, 5, 7, 9, 10, 12);
 
 -- Escopo
 UPDATE convite
@@ -475,9 +475,6 @@ INSERT INTO link(url, nome, tipo_link_id, reuniao_id) VALUES
 ('https://jira.com/browse/lll12', 'Planejamento Sprint', 2, 12);
 
 -- COMENTARIOS
-INSERT INTO comentario(conteudo, criador_id, documento_id, comentario_tipo_id, criado_em) VALUES
-('Precisamos melhorar esse requisito', 3, 1, 1, '2025-01-01 00:00:00'),
-('Sugiro adicionar login social', 4, 2, 3, '2025-01-01 00:00:00');
 
 -- Comentarios com scripts
 	-- 1. Comentários base (tipo 1)
