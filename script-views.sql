@@ -231,6 +231,29 @@ SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id =
 
 -- ---
 
+SELECT * FROM comentario;
+-- View de Comentários
+SELECT comentario.id, 
+	comentario.criador_id AS autor_id, usuario.nome AS autor_nome,
+    comentario.conteudo AS conteudo, comentario.documento_id,
+    
+    (SELECT JSON_OBJECT(
+		'parent_id', comentario_respondido.parent_id,
+        'parent_autor', comentario_respondido.criador_id,
+        'parent_autor_nome', usuario.nome,
+        'parent_autor_nivel_acesso', usuario_projeto.nivel_acesso_id
+    ) FROM comentario AS comentario_respondido 
+    JOIN usuario ON comentario_respondido.criador_id = usuario.id
+    JOIN usuario_projeto ON comentario_respondido.criador_id = usuario_projeto.usuario_id
+    WHERE comentario_respondido.id = comentario.parent_id ) AS parent
+    
+    
+FROM comentario
+JOIN usuario ON comentario.criador_id = usuario.id
+WHERE comentario.id = 1
+;
+-- ---
+
 -- VIEW DE DETALHES DE REUNIOES
 DROP VIEW IF EXISTS vw_reuniao_detalhes;
 CREATE VIEW vw_reuniao_detalhes AS
