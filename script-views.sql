@@ -94,7 +94,100 @@ GROUP BY id;
     JOIN usuario_projeto ON vw.id = usuario_projeto.projeto_id
 	WHERE  projeto_id = 0 AND usuario_id = 0; -- valores a alterar;
 
--- ---
+-- View para buscar a lista de participantes de um projeto
+-- o objetivo é usar essa como uma subview, ter uma view maior que vai puxar essa como um array
+DROP VIEW IF EXISTS vw_participantes_projetos;
+CREATE VIEW vw_participantes_projetos AS
+SELECT 
+	usuario.id AS usuario_id,
+    usuario.nome,
+    usuario.email,
+	usuario.foto_perfil,
+    
+    usuario_projeto.id AS usuario_projeto_id,
+    usuario_projeto.projeto_id AS projeto_id,
+    
+    usuario_projeto.nivel_acesso_id,
+    nivel_acesso.nome AS nivel_acesso
+FROM usuario_projeto
+JOIN usuario ON usuario_projeto.usuario_id = usuario.id
+JOIN nivel_acesso ON usuario_projeto.nivel_acesso_id = nivel_acesso.id
+WHERE usuario.status = 1
+ORDER BY nivel_acesso_id;
+
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_participantes_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+    
+-- View para buscar a lista de convidados pendentes de um projeto
+-- o objetivo é usar essa como uma subview, ter uma view maior que vai puxar essa como um array
+DROP VIEW IF EXISTS vw_convites_pendentes_projeto;
+CREATE VIEW vw_convites_pendentes_projetos AS
+SELECT
+    usuario.id AS usuario_id,
+    usuario.nome,
+    usuario.email,
+    usuario.foto_perfil,
+	convite.id AS convite_id,
+    convite.projeto_id AS projeto_id,
+    convite.nivel_acesso_id,
+    nivel_acesso.nome AS nivel_acesso,
+    convite.criado_em AS convidado_em
+FROM convite
+JOIN usuario ON convite.destinatario_id = usuario.id
+JOIN nivel_acesso ON convite.nivel_acesso_id = nivel_acesso.id
+WHERE convite_status_id = 1
+ORDER BY convite.nivel_acesso_id;
+
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_convites_pendentes_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+    
+-- View para buscar participantes e convites pendentes, une as duas sub-views acima
+DROP VIEW IF EXISTS vw_usuarios_projetos;
+CREATE VIEW vw_usuarios_projetos AS
+SELECT projeto.id AS projeto_id,
+	COALESCE((	
+		SELECT JSON_ARRAYAGG(
+			JSON_OBJECT(
+					'usuario_id',usuario_id,
+					'nome', nome, 
+					'email', email, 
+					'foto_perfil', foto_perfil, 
+					'usuario_projeto_id', usuario_projeto_id, 
+					'projeto_id', projeto_id, 
+					'nivel_acesso_id', nivel_acesso_id, 
+					'nivel_acesso', nivel_acesso
+			)
+		)
+		FROM vw_participantes_projetos
+		WHERE vw_participantes_projetos.projeto_id = projeto.id
+    ), JSON_ARRAY()) AS participantes,
+    COALESCE((
+		SELECT JSON_ARRAYAGG(
+			JSON_OBJECT(
+					'usuario_id',usuario_id,
+					'nome', nome, 
+					'email', email, 
+					'foto_perfil', foto_perfil, 
+					'projeto_id', projeto_id, 
+					'nivel_acesso_id', nivel_acesso_id, 
+					'nivel_acesso', nivel_acesso,
+                    'convidado_em', convidado_em
+			)
+		)
+		FROM vw_convites_pendentes_projetos
+		WHERE vw_convites_pendentes_projetos.projeto_id = projeto.id
+    ), JSON_ARRAY()) AS pendentes
+FROM projeto;
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de projeto a consultar
+	SELECT * FROM vw_usuarios_projetos
+	WHERE projeto_id = 0; -- valor a alterar
+
+
 
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
@@ -135,6 +228,48 @@ FROM categoria c;
 
 -- Exemplo de utilização:
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
+
+-- ---
+-- View de Comentários
+DROP VIEW IF EXISTS vw_comentarios;
+CREATE VIEW vw_comentarios AS
+SELECT comentario.id, 
+	comentario.criador_id AS autor_id, usuario.nome AS autor_nome,
+    comentario.conteudo AS conteudo, comentario.documento_id, comentario.criado_em,
+    COALESCE(
+		(SELECT JSON_OBJECT(
+			'parent_id', comentario_respondido.id,
+			'parent_autor_id', comentario_respondido.criador_id,
+			'parent_autor_nome', usuario_parent.nome,
+			'parent_autor_nivel_acesso_id', usuario_projeto_parent.nivel_acesso_id,
+            'parent_autor_nivel_acesso', nivel_acesso_parent.nome
+		)
+        FROM comentario AS comentario_respondido 
+		JOIN usuario AS usuario_parent ON comentario_respondido.criador_id = usuario_parent.id
+		JOIN usuario_projeto AS usuario_projeto_parent ON comentario_respondido.criador_id = usuario_projeto_parent.usuario_id
+        JOIN nivel_acesso AS nivel_acesso_parent ON usuario_projeto_parent.nivel_acesso_id = nivel_acesso_parent.id
+		WHERE comentario_respondido.id = comentario.parent_id AND usuario_projeto_parent.projeto_id = projeto.id), JSON_OBJECT()
+	)AS parent,
+    COALESCE(
+		(SELECT JSON_OBJECT(
+			'registro_id', registro.id,
+			'registro_titulo', registro.titulo
+		)
+        FROM registro 
+		WHERE comentario.registro_referencia_id = registro.id ), JSON_OBJECT()
+	)AS registro
+FROM comentario
+JOIN usuario ON comentario.criador_id = usuario.id
+JOIN documento ON comentario.documento_id = documento.id
+JOIN categoria ON documento.categoria_id = categoria.id
+JOIN projeto ON categoria.projeto_id = projeto.id
+ORDER BY criado_em DESC
+;
+	-- Exemplo de uso da view
+    -- -- Substitua o 0 pelo id de documento a consultar
+	SELECT * FROM vw_comentarios
+	WHERE documento_id = 0; -- valor a alterar
+
 
 -- ---
 

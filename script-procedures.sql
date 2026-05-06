@@ -37,15 +37,11 @@ BEGIN
 		SELECT nivel_acesso_id FROM usuario_projeto WHERE usuario_id = in_remetente_id AND projeto_id = in_projeto_id INTO nivel_acesso_remetente;
         -- 403, sem permissão
 		IF nivel_acesso_remetente > 1 THEN
-            SIGNAL SQLSTATE '45001'
-            SET MESSAGE_TEXT = 'ERRO 403: Nível de acesso negado.';
 			LEAVE main;
         END IF;
 
         -- Usuário já participa do projeto
 		IF usuario_pertence_projeto > 0 THEN
-            SIGNAL SQLSTATE '45002'
-            SET MESSAGE_TEXT = 'Um usuario já participa do projeto.';
             LEAVE main;
 		END IF;
 
