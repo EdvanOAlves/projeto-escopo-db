@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.20
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -871,6 +871,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_convites_usuario`
+--
+
+DROP TABLE IF EXISTS `vw_convites_usuario`;
+/*!50001 DROP VIEW IF EXISTS `vw_convites_usuario`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_convites_usuario` AS SELECT 
+ 1 AS `id`,
+ 1 AS `nome_remetente`,
+ 1 AS `projeto`,
+ 1 AS `criado_em`,
+ 1 AS `projeto_id`,
+ 1 AS `destinatario_id`,
+ 1 AS `status`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vw_documento_detalhes`
 --
 
@@ -1194,6 +1212,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_convites_usuario`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_convites_usuario`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_convites_usuario` AS select `convite`.`id` AS `id`,`usuario`.`nome` AS `nome_remetente`,`projeto`.`titulo` AS `projeto`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,coalesce((select json_object('id',`convite_status`.`id`,'nome',`convite_status`.`nome`) from `convite_status` where (`convite`.`convite_status_id` = `convite_status`.`id`)),json_object()) AS `status` from ((`convite` join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`convite`.`remetente_id` = `usuario`.`id`))) where (`convite`.`convite_status_id` in (1,4)) order by `convite`.`criado_em` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_documento_detalhes`
 --
 
@@ -1260,7 +1296,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,group_concat(`usuario`.`foto_perfil` separator ',') AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
+/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,json_arrayagg(`usuario`.`foto_perfil`) AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1346,4 +1382,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-05 21:27:56
+-- Dump completed on 2026-05-12 11:30:50

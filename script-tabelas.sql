@@ -29,6 +29,7 @@ CREATE TABLE projeto (
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT TRUE,
     criador_id INT NOT NULL,
+    deletado_em TIMESTAMP NULL,
     
     CONSTRAINT fk_projeto_usuario_criador
     FOREIGN KEY (criador_id) REFERENCES usuario(id)
