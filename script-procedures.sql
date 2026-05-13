@@ -63,6 +63,105 @@ END$$
 -- Exemplo de uso
 -- CALL enviar_convite(:projeto_id, :destinatario_id, :nivel_acesso_id, :remetente_id);
 
+-- ATUALIZAR CONVITE (e enviar o convite aviso para o usuário que enviou)
+DELIMITER $$
+
+CREATE PROCEDURE atualizar_convite(
+    IN p_convite_id INT,
+    IN p_usuario_id INT,
+    IN p_novo_status_id INT
+)
+BEGIN
+    DECLARE v_status_atual INT;
+    DECLARE v_destinatario_id INT;
+    DECLARE v_remetente_id INT;
+    DECLARE v_projeto_id INT;
+
+    -- Busca informações do convite
+    SELECT
+        convite_status_id,
+        destinatario_id,
+        remetente_id,
+        projeto_id
+    INTO
+        v_status_atual,
+        v_destinatario_id,
+        v_remetente_id,
+        v_projeto_id
+    FROM convite
+    WHERE id = p_convite_id;
+
+    -- Verifica se convite existe
+    IF v_status_atual IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Convite não encontrado';
+    END IF;
+
+    -- Verifica se o usuário é o destinatário
+    IF v_destinatario_id <> p_usuario_id THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Usuário não autorizado a atualizar este convite';
+    END IF;
+
+
+    -- =====================================================
+    -- Validações
+    -- =====================================================
+    -- Convite pendente
+    IF v_status_atual = 1 THEN
+        -- Unicas opções para um convite pendente(1) é recusar(2) ou aceitar(6)
+        IF p_novo_status_id NOT IN (2, 6) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite pendente';
+        END IF;
+
+    -- Convite não-lido
+    ELSEIF v_status_atual = 4 THEN
+        -- Só pode marcar como lido
+        IF p_novo_status_id <> 5 THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite-aviso';
+        END IF;
+        
+    -- Qualquer outro status é bloqueado
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Este convite não pode mais ser atualizado';
+    END IF;
+
+    -- Atualiza o status
+    UPDATE convite
+    SET convite_status_id = p_novo_status_id
+    WHERE id = p_convite_id;
+
+    -- =====================================================
+    -- Se aceitou o convite
+    -- =====================================================
+    IF p_novo_status_id = 6 THEN
+
+        -- Cria notificação para o remetente
+        INSERT INTO convite(
+            projeto_id,
+            destinatario_id,
+            remetente_id,
+            nivel_acesso_id,
+            convite_status_id
+        )
+        VALUES(
+            v_projeto_id,
+            v_remetente_id,   -- quem recebe a notificação
+            p_usuario_id,     -- quem aceitou
+            NULL,
+            4                 -- não-lido
+        );
+
+    END IF;
+END$$
+-- Exemplo de uso
+-- CALL atualizar_convite(:convite_id, :usuario_id, :nivel_acesso_id);
+
+
+
 -- CRIAR USUARIO
 DROP PROCEDURE IF EXISTS criar_usuario$$
 CREATE PROCEDURE criar_usuario(

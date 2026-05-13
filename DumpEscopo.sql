@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_escopo`;
--- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -305,7 +305,7 @@ CREATE TABLE `convite` (
   CONSTRAINT `fk_convite_nivel_acesso` FOREIGN KEY (`nivel_acesso_id`) REFERENCES `nivel_acesso` (`id`),
   CONSTRAINT `fk_convite_projeto` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`),
   CONSTRAINT `fk_convite_status_convite` FOREIGN KEY (`convite_status_id`) REFERENCES `convite_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -314,7 +314,7 @@ CREATE TABLE `convite` (
 
 LOCK TABLES `convite` WRITE;
 /*!40000 ALTER TABLE `convite` DISABLE KEYS */;
-INSERT INTO `convite` VALUES (1,'2025-01-01 04:15:00',1,2,1,1,6),(2,'2025-01-01 06:48:00',1,3,2,1,6),(3,'2025-01-01 10:21:00',1,4,3,1,6),(4,'2025-01-02 14:43:00',1,5,4,1,6),(5,'2025-02-13 17:15:00',2,1,2,5,6),(6,'2025-02-15 19:50:00',2,3,2,5,1),(7,'2025-02-17 22:25:00',2,6,2,5,6),(8,'2025-02-21 00:36:00',2,4,3,5,1),(9,'2025-02-25 13:58:00',2,7,4,5,6),(10,'2025-04-01 14:05:00',3,8,1,6,6),(11,'2025-04-01 14:20:00',3,7,2,6,1),(12,'2025-04-01 14:53:00',3,5,3,6,6),(13,'2025-04-01 16:18:00',3,3,4,6,1),(14,'2026-02-27 13:31:00',4,10,2,11,6),(15,'2026-02-27 13:32:00',4,12,2,11,6),(16,'2026-02-27 13:33:00',4,13,2,11,6),(17,'2026-02-27 13:43:00',4,15,4,11,1),(18,'2026-03-19 13:43:00',4,14,3,11,1);
+INSERT INTO `convite` VALUES (1,'2025-01-01 04:15:00',1,2,1,1,6),(2,'2025-01-01 06:48:00',1,3,2,1,6),(3,'2025-01-01 10:21:00',1,4,3,1,6),(4,'2025-01-02 14:43:00',1,5,4,1,6),(5,'2025-02-13 17:15:00',2,1,2,5,6),(6,'2025-02-15 19:50:00',2,3,2,5,6),(7,'2025-02-17 22:25:00',2,6,2,5,6),(8,'2025-02-21 00:36:00',2,4,3,5,1),(9,'2025-02-25 13:58:00',2,7,4,5,6),(10,'2025-04-01 14:05:00',3,8,1,6,6),(11,'2025-04-01 14:20:00',3,7,2,6,1),(12,'2025-04-01 14:53:00',3,5,3,6,6),(13,'2025-04-01 16:18:00',3,3,4,6,1),(14,'2026-02-27 13:31:00',4,10,2,11,6),(15,'2026-02-27 13:32:00',4,12,2,11,6),(16,'2026-02-27 13:33:00',4,13,2,11,6),(17,'2026-02-27 13:43:00',4,15,4,11,1),(18,'2026-03-19 13:43:00',4,14,3,11,1),(19,'2026-05-13 22:23:11',2,5,NULL,3,4);
 /*!40000 ALTER TABLE `convite` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -788,7 +788,7 @@ CREATE TABLE `usuario_projeto` (
   CONSTRAINT `fk_usuario_projeto_nivel_acesso` FOREIGN KEY (`nivel_acesso_id`) REFERENCES `nivel_acesso` (`id`),
   CONSTRAINT `fk_usuario_projeto_projeto` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`),
   CONSTRAINT `fk_usuario_projeto_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -797,7 +797,7 @@ CREATE TABLE `usuario_projeto` (
 
 LOCK TABLES `usuario_projeto` WRITE;
 /*!40000 ALTER TABLE `usuario_projeto` DISABLE KEYS */;
-INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2);
+INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2),(17,3,2,2);
 /*!40000 ALTER TABLE `usuario_projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1042,6 +1042,112 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'db_escopo'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `atualizar_convite` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizar_convite`(
+    IN p_convite_id INT,
+    IN p_usuario_id INT,
+    IN p_novo_status_id INT
+)
+BEGIN
+    DECLARE v_status_atual INT;
+    DECLARE v_destinatario_id INT;
+    DECLARE v_remetente_id INT;
+    DECLARE v_projeto_id INT;
+
+    -- Busca informações do convite
+    SELECT
+        convite_status_id,
+        destinatario_id,
+        remetente_id,
+        projeto_id
+    INTO
+        v_status_atual,
+        v_destinatario_id,
+        v_remetente_id,
+        v_projeto_id
+    FROM convite
+    WHERE id = p_convite_id;
+
+    -- Verifica se convite existe
+    IF v_status_atual IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Convite não encontrado';
+    END IF;
+
+    -- Verifica se o usuário é o destinatário
+    IF v_destinatario_id <> p_usuario_id THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Usuário não autorizado a atualizar este convite';
+    END IF;
+
+
+    -- =====================================================
+    -- Validações
+    -- =====================================================
+    -- Convite pendente
+    IF v_status_atual = 1 THEN
+        -- Unicas opções para um convite pendente(1) é recusar(2) ou aceitar(6)
+        IF p_novo_status_id NOT IN (2, 6) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite pendente';
+        END IF;
+
+    -- Convite não-lido
+    ELSEIF v_status_atual = 4 THEN
+        -- Só pode marcar como lido
+        IF p_novo_status_id <> 5 THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite-aviso';
+        END IF;
+        
+    -- Qualquer outro status é bloqueado
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Este convite não pode mais ser atualizado';
+    END IF;
+
+    -- Atualiza o status
+    UPDATE convite
+    SET convite_status_id = p_novo_status_id
+    WHERE id = p_convite_id;
+
+    -- =====================================================
+    -- Se aceitou o convite
+    -- =====================================================
+    IF p_novo_status_id = 6 THEN
+
+        -- Cria notificação para o remetente
+        INSERT INTO convite(
+            projeto_id,
+            destinatario_id,
+            remetente_id,
+            nivel_acesso_id,
+            convite_status_id
+        )
+        VALUES(
+            v_projeto_id,
+            v_remetente_id,   -- quem recebe a notificação
+            p_usuario_id,     -- quem aceitou
+            NULL,
+            4                 -- não-lido
+        );
+
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `criar_comentario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1520,4 +1626,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-13 11:09:02
+-- Dump completed on 2026-05-13 19:25:38
