@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_escopo`;
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -165,7 +165,7 @@ DROP TABLE IF EXISTS `comentario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comentario` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `conteudo` text NOT NULL,
+  `conteudo` varchar(500) NOT NULL,
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `parent_id` int DEFAULT NULL,
   `registro_referencia_id` int DEFAULT NULL,
@@ -945,6 +945,19 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_projeto_com_categorias_documentos`
+--
+
+DROP TABLE IF EXISTS `vw_projeto_com_categorias_documentos`;
+/*!50001 DROP VIEW IF EXISTS `vw_projeto_com_categorias_documentos`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_projeto_com_categorias_documentos` AS SELECT 
+ 1 AS `projeto_id`,
+ 1 AS `projeto`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vw_projetos_com_usuarios`
 --
 
@@ -1029,6 +1042,110 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'db_escopo'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `criar_comentario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criar_comentario`(
+    IN p_conteudo TEXT,
+    IN p_parent_id INT,
+    IN p_registro_referencia_id INT,
+    IN p_criador_id INT,
+    IN p_documento_id INT,
+    IN p_tipo_comentario_id INT
+)
+BEGIN
+    DECLARE v_projeto_id INT;
+    DECLARE v_parent_projeto_id INT;
+    DECLARE v_registro_projeto_id INT;
+
+    -- Busca o projeto do documento
+    SELECT p.id
+      INTO v_projeto_id
+    FROM documento d
+    JOIN categoria c
+      ON c.id = d.categoria_id
+    JOIN projeto p
+      ON p.id = c.projeto_id
+    WHERE d.id = p_documento_id
+    LIMIT 1;
+
+    -- Documento não existe
+    IF v_projeto_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Documento com o ID informado não encontrado';
+    END IF;
+
+    
+    -- Se existir referencia para um registro, valida ele
+    IF p_registro_referencia_id IS NOT NULL THEN
+		-- Verifica se o registro pertence ao mesmo projeto
+		SELECT r.projeto_id
+		  INTO v_registro_projeto_id
+		FROM registro r
+		WHERE r.id = p_registro_referencia_id
+		LIMIT 1;
+        
+        -- Registro não existe
+		IF (v_registro_projeto_id IS NULL OR v_registro_projeto_id <> v_projeto_id) THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Registro de referência com o ID informado não encontrado';
+		END IF;
+    END IF;
+
+    -- Se existir comentário pai, valida projeto
+    IF p_parent_id IS NOT NULL THEN
+
+        SELECT p2.id
+          INTO v_parent_projeto_id
+        FROM comentario cmt
+        JOIN documento d2
+          ON d2.id = cmt.documento_id
+        JOIN categoria cat2
+          ON cat2.id = d2.categoria_id
+        JOIN projeto p2
+          ON p2.id = cat2.projeto_id
+        WHERE cmt.id = p_parent_id
+        LIMIT 1;
+
+        -- Comentário pai não existe
+        IF (v_parent_projeto_id IS NULL OR v_parent_projeto_id <> v_projeto_id) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'ID de referência para outro comentário (parent_id) não encontrado';
+        END IF;
+
+    END IF;
+
+    -- Insert final
+    INSERT INTO comentario (
+        conteudo,
+        parent_id,
+        registro_referencia_id,
+        criador_id,
+        documento_id,
+        comentario_tipo_id
+    )
+    VALUES (
+        p_conteudo,
+        p_parent_id,
+        p_registro_referencia_id,
+        p_criador_id,
+        p_documento_id,
+        p_tipo_comentario_id
+    );
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `criar_usuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1287,6 +1404,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_projeto_com_categorias_documentos`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_projeto_com_categorias_documentos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_projeto_com_categorias_documentos` AS select `p`.`id` AS `projeto_id`,json_object('id',`p`.`id`,'categorias',coalesce((select json_arrayagg(json_object('id',`c`.`id`,'nome',`c`.`titulo`,'documentos',coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where (`d`.`categoria_id` = `c`.`id`)),json_array()))) from `categoria` `c` where (`c`.`projeto_id` = `p`.`id`)),json_array())) AS `projeto` from `projeto` `p` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_projetos_com_usuarios`
 --
 
@@ -1385,4 +1520,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-12 22:35:38
+-- Dump completed on 2026-05-13 11:09:02

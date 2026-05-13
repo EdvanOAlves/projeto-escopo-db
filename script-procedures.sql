@@ -91,4 +91,94 @@ BEGIN
     END IF;
 END $$
 
+CREATE PROCEDURE criar_comentario (
+    IN p_conteudo TEXT,
+    IN p_parent_id INT,
+    IN p_registro_referencia_id INT,
+    IN p_criador_id INT,
+    IN p_documento_id INT,
+    IN p_tipo_comentario_id INT
+)
+BEGIN
+    DECLARE v_projeto_id INT;
+    DECLARE v_parent_projeto_id INT;
+    DECLARE v_registro_projeto_id INT;
+
+    -- Busca o projeto do documento
+    SELECT p.id
+      INTO v_projeto_id
+    FROM documento d
+    JOIN categoria c
+      ON c.id = d.categoria_id
+    JOIN projeto p
+      ON p.id = c.projeto_id
+    WHERE d.id = p_documento_id
+    LIMIT 1;
+
+    -- Documento não existe
+    IF v_projeto_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Documento com o ID informado não encontrado';
+    END IF;
+
+    
+    -- Se existir referencia para um registro, valida ele
+    IF p_registro_referencia_id IS NOT NULL THEN
+		-- Verifica se o registro pertence ao mesmo projeto
+		SELECT r.projeto_id
+		  INTO v_registro_projeto_id
+		FROM registro r
+		WHERE r.id = p_registro_referencia_id
+		LIMIT 1;
+        
+        -- Registro não existe
+		IF (v_registro_projeto_id IS NULL OR v_registro_projeto_id <> v_projeto_id) THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Registro de referência com o ID informado não encontrado';
+		END IF;
+    END IF;
+
+    -- Se existir comentário pai, valida projeto
+    IF p_parent_id IS NOT NULL THEN
+
+        SELECT p2.id
+          INTO v_parent_projeto_id
+        FROM comentario cmt
+        JOIN documento d2
+          ON d2.id = cmt.documento_id
+        JOIN categoria cat2
+          ON cat2.id = d2.categoria_id
+        JOIN projeto p2
+          ON p2.id = cat2.projeto_id
+        WHERE cmt.id = p_parent_id
+        LIMIT 1;
+
+        -- Comentário pai não existe
+        IF (v_parent_projeto_id IS NULL OR v_parent_projeto_id <> v_projeto_id) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'ID de referência para outro comentário (parent_id) não encontrado';
+        END IF;
+
+    END IF;
+
+    -- Insert final
+    INSERT INTO comentario (
+        conteudo,
+        parent_id,
+        registro_referencia_id,
+        criador_id,
+        documento_id,
+        comentario_tipo_id
+    )
+    VALUES (
+        p_conteudo,
+        p_parent_id,
+        p_registro_referencia_id,
+        p_criador_id,
+        p_documento_id,
+        p_tipo_comentario_id
+    );
+
+END$$
+
 DELIMITER ;

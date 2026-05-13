@@ -293,7 +293,7 @@ CREATE TABLE comentario_tipo (
 -- Comentario
 CREATE TABLE comentario (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    conteudo TEXT NOT NULL,
+    conteudo VARCHAR(500) NOT NULL,
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     parent_id INT NULL,
     registro_referencia_id INT NULL,
