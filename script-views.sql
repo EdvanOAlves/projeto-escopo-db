@@ -68,6 +68,7 @@ FROM documento
 JOIN documento_versao ON documento_versao.documento_id = documento.id
 JOIN categoria ON categoria.id = documento.categoria_id
 JOIN projeto ON categoria.projeto_id = projeto.id
+WHERE deletado_em IS NULL
 ORDER BY ultima_edicao DESC;
 
 	-- Exemplo de uso

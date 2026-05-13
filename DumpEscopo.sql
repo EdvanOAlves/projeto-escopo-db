@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `db_escopo`;
+-- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.20
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -586,6 +588,7 @@ CREATE TABLE `projeto` (
   `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(1) DEFAULT '1',
   `criador_id` int NOT NULL,
+  `deletado_em` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_projeto_usuario_criador` (`criador_id`),
   CONSTRAINT `fk_projeto_usuario_criador` FOREIGN KEY (`criador_id`) REFERENCES `usuario` (`id`)
@@ -598,7 +601,7 @@ CREATE TABLE `projeto` (
 
 LOCK TABLES `projeto` WRITE;
 /*!40000 ALTER TABLE `projeto` DISABLE KEYS */;
-INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11);
+INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1,NULL),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5,NULL),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6,NULL),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11,NULL);
 /*!40000 ALTER TABLE `projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -1260,7 +1263,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_documentos_recentes` AS select `documento`.`id` AS `id`,`projeto`.`titulo` AS `projeto`,`categoria`.`titulo` AS `categoria`,`documento`.`titulo` AS `documento`,`documento_versao`.`criado_em` AS `ultima_edicao`,`documento_versao`.`criador_id` AS `criador_id` from (((`documento` join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) join `categoria` on((`categoria`.`id` = `documento`.`categoria_id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) order by `documento_versao`.`criado_em` desc */;
+/*!50001 VIEW `vw_documentos_recentes` AS select `documento`.`id` AS `id`,`projeto`.`titulo` AS `projeto`,`categoria`.`titulo` AS `categoria`,`documento`.`titulo` AS `documento`,`documento_versao`.`criado_em` AS `ultima_edicao`,`documento_versao`.`criador_id` AS `criador_id` from (((`documento` join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) join `categoria` on((`categoria`.`id` = `documento`.`categoria_id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) where (`documento`.`deletado_em` is null) order by `documento_versao`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1382,4 +1385,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-12 11:30:50
+-- Dump completed on 2026-05-12 22:35:38
