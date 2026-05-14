@@ -29,6 +29,7 @@ CREATE TABLE projeto (
     data_criacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     status BOOLEAN DEFAULT TRUE,
     criador_id INT NOT NULL,
+    deletado_em TIMESTAMP NULL,
     
     CONSTRAINT fk_projeto_usuario_criador
     FOREIGN KEY (criador_id) REFERENCES usuario(id)
@@ -246,6 +247,7 @@ CREATE TABLE categoria (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100) NOT NULL,
     projeto_id INT NOT NULL,
+    deletado_em TIMESTAMP NULL,
 
 	CONSTRAINT fk_categoria_projeto
     FOREIGN KEY (projeto_id) REFERENCES projeto(id)
@@ -292,7 +294,7 @@ CREATE TABLE comentario_tipo (
 -- Comentario
 CREATE TABLE comentario (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    conteudo TEXT NOT NULL,
+    conteudo VARCHAR(500) NOT NULL,
     criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     parent_id INT NULL,
     registro_referencia_id INT NULL,

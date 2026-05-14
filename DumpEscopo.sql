@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `db_escopo`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
@@ -138,6 +140,7 @@ CREATE TABLE `categoria` (
   `id` int NOT NULL AUTO_INCREMENT,
   `titulo` varchar(100) NOT NULL,
   `projeto_id` int NOT NULL,
+  `deletado_em` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_categoria_projeto` (`projeto_id`),
   CONSTRAINT `fk_categoria_projeto` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`)
@@ -150,7 +153,7 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Plataforma Web',1),(2,'Aplicativo Mobile',1),(3,'Documentos Gerais',2),(4,'Aplicativo Usuarios',2),(5,'Aplicativo Entregadores',2),(6,'Banco de Dados',3),(7,'Back-end',3),(8,'Front-end',3),(9,'Organização',4),(10,'Banco de Dados',4),(11,'Back-End',4),(12,'Front-End',4),(13,'Mobile',4);
+INSERT INTO `categoria` VALUES (1,'Plataforma Web',1,NULL),(2,'Aplicativo Mobile',1,NULL),(3,'Documentos Gerais',2,NULL),(4,'Aplicativo Usuarios',2,NULL),(5,'Aplicativo Entregadores',2,NULL),(6,'Banco de Dados',3,NULL),(7,'Back-end',3,NULL),(8,'Front-end',3,NULL),(9,'Organização',4,NULL),(10,'Banco de Dados',4,NULL),(11,'Back-End',4,NULL),(12,'Front-End',4,NULL),(13,'Mobile',4,NULL);
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +166,7 @@ DROP TABLE IF EXISTS `comentario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `comentario` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `conteudo` text NOT NULL,
+  `conteudo` varchar(500) NOT NULL,
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `parent_id` int DEFAULT NULL,
   `registro_referencia_id` int DEFAULT NULL,
@@ -303,7 +306,7 @@ CREATE TABLE `convite` (
   CONSTRAINT `fk_convite_nivel_acesso` FOREIGN KEY (`nivel_acesso_id`) REFERENCES `nivel_acesso` (`id`),
   CONSTRAINT `fk_convite_projeto` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`),
   CONSTRAINT `fk_convite_status_convite` FOREIGN KEY (`convite_status_id`) REFERENCES `convite_status` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -312,7 +315,7 @@ CREATE TABLE `convite` (
 
 LOCK TABLES `convite` WRITE;
 /*!40000 ALTER TABLE `convite` DISABLE KEYS */;
-INSERT INTO `convite` VALUES (1,'2025-01-01 04:15:00',1,2,1,1,6),(2,'2025-01-01 06:48:00',1,3,2,1,6),(3,'2025-01-01 10:21:00',1,4,3,1,6),(4,'2025-01-02 14:43:00',1,5,4,1,6),(5,'2025-02-13 17:15:00',2,1,2,5,6),(6,'2025-02-15 19:50:00',2,3,2,5,1),(7,'2025-02-17 22:25:00',2,6,2,5,6),(8,'2025-02-21 00:36:00',2,4,3,5,1),(9,'2025-02-25 13:58:00',2,7,4,5,6),(10,'2025-04-01 14:05:00',3,8,1,6,6),(11,'2025-04-01 14:20:00',3,7,2,6,1),(12,'2025-04-01 14:53:00',3,5,3,6,6),(13,'2025-04-01 16:18:00',3,3,4,6,1),(14,'2026-02-27 13:31:00',4,10,2,11,6),(15,'2026-02-27 13:32:00',4,12,2,11,6),(16,'2026-02-27 13:33:00',4,13,2,11,6),(17,'2026-02-27 13:43:00',4,15,4,11,1),(18,'2026-03-19 13:43:00',4,14,3,11,1);
+INSERT INTO `convite` VALUES (1,'2025-01-01 04:15:00',1,2,1,1,6),(2,'2025-01-01 06:48:00',1,3,2,1,6),(3,'2025-01-01 10:21:00',1,4,3,1,6),(4,'2025-01-02 14:43:00',1,5,4,1,6),(5,'2025-02-13 17:15:00',2,1,2,5,6),(6,'2025-02-15 19:50:00',2,3,2,5,6),(7,'2025-02-17 22:25:00',2,6,2,5,6),(8,'2025-02-21 00:36:00',2,4,3,5,1),(9,'2025-02-25 13:58:00',2,7,4,5,6),(10,'2025-04-01 14:05:00',3,8,1,6,6),(11,'2025-04-01 14:20:00',3,7,2,6,1),(12,'2025-04-01 14:53:00',3,5,3,6,6),(13,'2025-04-01 16:18:00',3,3,4,6,1),(14,'2026-02-27 13:31:00',4,10,2,11,6),(15,'2026-02-27 13:32:00',4,12,2,11,6),(16,'2026-02-27 13:33:00',4,13,2,11,6),(17,'2026-02-27 13:43:00',4,15,4,11,1),(18,'2026-03-19 13:43:00',4,14,3,11,1),(19,'2026-05-13 22:23:11',2,5,NULL,3,4),(20,'2026-05-13 22:39:47',5,12,3,11,1);
 /*!40000 ALTER TABLE `convite` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -586,10 +589,11 @@ CREATE TABLE `projeto` (
   `data_criacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` tinyint(1) DEFAULT '1',
   `criador_id` int NOT NULL,
+  `deletado_em` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_projeto_usuario_criador` (`criador_id`),
   CONSTRAINT `fk_projeto_usuario_criador` FOREIGN KEY (`criador_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -598,7 +602,7 @@ CREATE TABLE `projeto` (
 
 LOCK TABLES `projeto` WRITE;
 /*!40000 ALTER TABLE `projeto` DISABLE KEYS */;
-INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11);
+INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1,NULL),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5,NULL),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6,NULL),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11,NULL),(5,'asdasd','asdasd','2026-05-13 22:39:47',1,11,NULL);
 /*!40000 ALTER TABLE `projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -785,7 +789,7 @@ CREATE TABLE `usuario_projeto` (
   CONSTRAINT `fk_usuario_projeto_nivel_acesso` FOREIGN KEY (`nivel_acesso_id`) REFERENCES `nivel_acesso` (`id`),
   CONSTRAINT `fk_usuario_projeto_projeto` FOREIGN KEY (`projeto_id`) REFERENCES `projeto` (`id`),
   CONSTRAINT `fk_usuario_projeto_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -794,7 +798,7 @@ CREATE TABLE `usuario_projeto` (
 
 LOCK TABLES `usuario_projeto` WRITE;
 /*!40000 ALTER TABLE `usuario_projeto` DISABLE KEYS */;
-INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2);
+INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2),(17,3,2,2),(18,11,5,1);
 /*!40000 ALTER TABLE `usuario_projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -871,6 +875,24 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `vw_convites_usuario`
+--
+
+DROP TABLE IF EXISTS `vw_convites_usuario`;
+/*!50001 DROP VIEW IF EXISTS `vw_convites_usuario`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_convites_usuario` AS SELECT 
+ 1 AS `id`,
+ 1 AS `nome_remetente`,
+ 1 AS `projeto`,
+ 1 AS `criado_em`,
+ 1 AS `projeto_id`,
+ 1 AS `destinatario_id`,
+ 1 AS `status`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `vw_documento_detalhes`
 --
 
@@ -921,6 +943,19 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `projeto_id`,
  1 AS `nivel_acesso_id`,
  1 AS `nivel_acesso`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `vw_projeto_com_categorias_documentos`
+--
+
+DROP TABLE IF EXISTS `vw_projeto_com_categorias_documentos`;
+/*!50001 DROP VIEW IF EXISTS `vw_projeto_com_categorias_documentos`*/;
+SET @saved_cs_client     = @@character_set_client;
+/*!50503 SET character_set_client = utf8mb4 */;
+/*!50001 CREATE VIEW `vw_projeto_com_categorias_documentos` AS SELECT 
+ 1 AS `projeto_id`,
+ 1 AS `projeto`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -1008,6 +1043,216 @@ SET character_set_client = @saved_cs_client;
 --
 -- Dumping routines for database 'db_escopo'
 --
+/*!50003 DROP PROCEDURE IF EXISTS `atualizar_convite` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizar_convite`(
+    IN p_convite_id INT,
+    IN p_usuario_id INT,
+    IN p_novo_status_id INT
+)
+BEGIN
+    DECLARE v_status_atual INT;
+    DECLARE v_destinatario_id INT;
+    DECLARE v_remetente_id INT;
+    DECLARE v_projeto_id INT;
+
+    -- Busca informações do convite
+    SELECT
+        convite_status_id,
+        destinatario_id,
+        remetente_id,
+        projeto_id
+    INTO
+        v_status_atual,
+        v_destinatario_id,
+        v_remetente_id,
+        v_projeto_id
+    FROM convite
+    WHERE id = p_convite_id;
+
+    -- Verifica se convite existe
+    IF v_status_atual IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Convite não encontrado';
+    END IF;
+
+    -- Verifica se o usuário é o destinatário
+    IF v_destinatario_id <> p_usuario_id THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Usuário não autorizado a atualizar este convite';
+    END IF;
+
+
+    -- =====================================================
+    -- Validações
+    -- =====================================================
+    -- Convite pendente
+    IF v_status_atual = 1 THEN
+        -- Unicas opções para um convite pendente(1) é recusar(2) ou aceitar(6)
+        IF p_novo_status_id NOT IN (2, 6) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite pendente';
+        END IF;
+
+    -- Convite não-lido
+    ELSEIF v_status_atual = 4 THEN
+        -- Só pode marcar como lido
+        IF p_novo_status_id <> 5 THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'Status inválido para convite-aviso';
+        END IF;
+        
+    -- Qualquer outro status é bloqueado
+    ELSE
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Este convite não pode mais ser atualizado';
+    END IF;
+
+    -- Atualiza o status
+    UPDATE convite
+    SET convite_status_id = p_novo_status_id
+    WHERE id = p_convite_id;
+
+    -- =====================================================
+    -- Se aceitou o convite
+    -- =====================================================
+    IF p_novo_status_id = 6 THEN
+
+        -- Cria notificação para o remetente
+        INSERT INTO convite(
+            projeto_id,
+            destinatario_id,
+            remetente_id,
+            nivel_acesso_id,
+            convite_status_id
+        )
+        VALUES(
+            v_projeto_id,
+            v_remetente_id,   -- quem recebe a notificação
+            p_usuario_id,     -- quem aceitou
+            NULL,
+            4                 -- não-lido
+        );
+
+    END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `criar_comentario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `criar_comentario`(
+    IN p_conteudo TEXT,
+    IN p_parent_id INT,
+    IN p_registro_referencia_id INT,
+    IN p_criador_id INT,
+    IN p_documento_id INT,
+    IN p_tipo_comentario_id INT
+)
+BEGIN
+    DECLARE v_projeto_id INT;
+    DECLARE v_parent_projeto_id INT;
+    DECLARE v_registro_projeto_id INT;
+
+    -- Busca o projeto do documento
+    SELECT p.id
+      INTO v_projeto_id
+    FROM documento d
+    JOIN categoria c
+      ON c.id = d.categoria_id
+    JOIN projeto p
+      ON p.id = c.projeto_id
+    WHERE d.id = p_documento_id
+    LIMIT 1;
+
+    -- Documento não existe
+    IF v_projeto_id IS NULL THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Documento com o ID informado não encontrado';
+    END IF;
+
+    
+    -- Se existir referencia para um registro, valida ele
+    IF p_registro_referencia_id IS NOT NULL THEN
+		-- Verifica se o registro pertence ao mesmo projeto
+		SELECT r.projeto_id
+		  INTO v_registro_projeto_id
+		FROM registro r
+		WHERE r.id = p_registro_referencia_id
+		LIMIT 1;
+        
+        -- Registro não existe
+		IF (v_registro_projeto_id IS NULL OR v_registro_projeto_id <> v_projeto_id) THEN
+			SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Registro de referência com o ID informado não encontrado';
+		END IF;
+    END IF;
+
+    -- Se existir comentário pai, valida projeto
+    IF p_parent_id IS NOT NULL THEN
+
+        SELECT p2.id
+          INTO v_parent_projeto_id
+        FROM comentario cmt
+        JOIN documento d2
+          ON d2.id = cmt.documento_id
+        JOIN categoria cat2
+          ON cat2.id = d2.categoria_id
+        JOIN projeto p2
+          ON p2.id = cat2.projeto_id
+        WHERE cmt.id = p_parent_id
+        LIMIT 1;
+
+        -- Comentário pai não existe
+        IF (v_parent_projeto_id IS NULL OR v_parent_projeto_id <> v_projeto_id) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'ID de referência para outro comentário (parent_id) não encontrado';
+        END IF;
+
+    END IF;
+
+    -- Insert final
+    INSERT INTO comentario (
+        conteudo,
+        parent_id,
+        registro_referencia_id,
+        criador_id,
+        documento_id,
+        comentario_tipo_id
+    )
+    VALUES (
+        p_conteudo,
+        p_parent_id,
+        p_registro_referencia_id,
+        p_criador_id,
+        p_documento_id,
+        p_tipo_comentario_id
+    );
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `criar_usuario` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -1134,7 +1379,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_categorias_com_documentos` AS select `c`.`id` AS `id`,`c`.`titulo` AS `nome`,`c`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where (`d`.`categoria_id` = `c`.`id`)),json_array()) AS `documentos` from `categoria` `c` */;
+/*!50001 VIEW `vw_categorias_com_documentos` AS select `c`.`id` AS `id`,`c`.`titulo` AS `nome`,`c`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where ((`d`.`categoria_id` = `c`.`id`) and (`d`.`deletado_em` is null))),json_array()) AS `documentos` from `categoria` `c` where (`c`.`deletado_em` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1194,6 +1439,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_convites_usuario`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_convites_usuario`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_convites_usuario` AS select `convite`.`id` AS `id`,`usuario`.`nome` AS `nome_remetente`,`projeto`.`titulo` AS `projeto`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,coalesce((select json_object('id',`convite_status`.`id`,'nome',`convite_status`.`nome`) from `convite_status` where (`convite`.`convite_status_id` = `convite_status`.`id`)),json_object()) AS `status` from ((`convite` join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`convite`.`remetente_id` = `usuario`.`id`))) where (`convite`.`convite_status_id` in (1,4)) order by `convite`.`criado_em` desc */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_documento_detalhes`
 --
 
@@ -1224,7 +1487,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_documentos_recentes` AS select `documento`.`id` AS `id`,`projeto`.`titulo` AS `projeto`,`categoria`.`titulo` AS `categoria`,`documento`.`titulo` AS `documento`,`documento_versao`.`criado_em` AS `ultima_edicao`,`documento_versao`.`criador_id` AS `criador_id` from (((`documento` join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) join `categoria` on((`categoria`.`id` = `documento`.`categoria_id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) order by `documento_versao`.`criado_em` desc */;
+/*!50001 VIEW `vw_documentos_recentes` AS select `documento`.`id` AS `id`,`projeto`.`titulo` AS `projeto`,`categoria`.`titulo` AS `categoria`,`documento`.`titulo` AS `documento`,`documento_versao`.`criado_em` AS `ultima_edicao`,`documento_versao`.`criador_id` AS `criador_id` from (((`documento` join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) join `categoria` on((`categoria`.`id` = `documento`.`categoria_id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) where ((`documento`.`deletado_em` is null) and (`projeto`.`deletado_em` is null)) order by `documento_versao`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1248,6 +1511,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `vw_projeto_com_categorias_documentos`
+--
+
+/*!50001 DROP VIEW IF EXISTS `vw_projeto_com_categorias_documentos`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `vw_projeto_com_categorias_documentos` AS select `p`.`id` AS `projeto_id`,json_object('id',`p`.`id`,'categorias',coalesce((select json_arrayagg(json_object('id',`c`.`id`,'nome',`c`.`titulo`,'documentos',coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where (`d`.`categoria_id` = `c`.`id`)),json_array()))) from `categoria` `c` where (`c`.`projeto_id` = `p`.`id`)),json_array())) AS `projeto` from `projeto` `p` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `vw_projetos_com_usuarios`
 --
 
@@ -1260,7 +1541,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,group_concat(`usuario`.`foto_perfil` separator ',') AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
+/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,json_arrayagg(`usuario`.`foto_perfil`) AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1314,7 +1595,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_reunioes_com_usuarios` AS select `reuniao`.`id` AS `id`,`reuniao`.`titulo` AS `titulo`,`reuniao`.`criado_em` AS `criado_em`,`reuniao`.`projeto_id` AS `projeto_id`,group_concat(`usuario`.`foto_perfil` separator ',') AS `foto_usuarios` from ((`reuniao` join `reuniao_usuario` on((`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`))) join `usuario` on((`reuniao_usuario`.`usuario_id` = `reuniao_usuario`.`usuario_id`))) group by `reuniao_usuario`.`reuniao_id` */;
+/*!50001 VIEW `vw_reunioes_com_usuarios` AS select `reuniao`.`id` AS `id`,`reuniao`.`titulo` AS `titulo`,`reuniao`.`criado_em` AS `criado_em`,`reuniao`.`projeto_id` AS `projeto_id`,json_arrayagg(`usuario`.`foto_perfil`) AS `foto_usuarios` from ((`reuniao` join `reuniao_usuario` on((`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`))) join `usuario` on((`reuniao_usuario`.`usuario_id` = `reuniao_usuario`.`usuario_id`))) group by `reuniao_usuario`.`reuniao_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1346,4 +1627,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-05 21:27:56
+-- Dump completed on 2026-05-14 14:26:50

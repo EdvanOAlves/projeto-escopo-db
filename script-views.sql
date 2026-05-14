@@ -5,7 +5,7 @@ DROP VIEW IF EXISTS vw_projetos_com_usuarios;
 CREATE VIEW vw_projetos_com_usuarios AS
 SELECT
 	projeto.id, projeto.titulo, projeto.descricao,
-	GROUP_CONCAT(usuario.foto_perfil) AS foto_usuarios
+	JSON_ARRAYAGG(usuario.foto_perfil) AS foto_usuarios
 FROM projeto
 JOIN usuario_projeto ON usuario_projeto.projeto_id = projeto.id
 JOIN usuario ON usuario_projeto.usuario_id = usuario.id
@@ -23,16 +23,34 @@ GROUP BY projeto.id, projeto.titulo, projeto.descricao;
 -- ---
 
 -- VIEW PARA CONVITES PENDENTES  E NÃO LIDOS
-DROP VIEW IF EXISTS vw_convites_ativos;
-CREATE VIEW vw_convites_ativos AS
-SELECT * FROM convite
-WHERE convite_status_id = 1 OR convite_status_id = 4
+DROP VIEW IF EXISTS vw_convites_usuario;
+CREATE VIEW  vw_convites_usuario AS
+SELECT
+  convite.id,
+  usuario.nome AS nome_remetente,
+  projeto.titulo AS projeto,
+  convite.criado_em,
+  convite.projeto_id,
+  convite.destinatario_id,
+  COALESCE((
+    SELECT JSON_OBJECT(
+      'id', convite_status.id,
+      'nome', convite_status.nome
+    ) FROM convite_status
+    WHERE convite.convite_status_id = convite_status.id
+  ), JSON_OBJECT()) AS status
+FROM convite
+JOIN projeto
+  ON convite.projeto_id = projeto.id
+JOIN usuario
+  ON convite.remetente_id = usuario.id
+WHERE convite_status_id IN (1, 4)
 ORDER BY criado_em DESC;
 
 	-- Exemplo de uso
 	-- Substitua o 0 pelo id de usuario a consultar
-	SELECT * FROM vw_convites_ativos
-	WHERE  destinatario_id = 0; -- valor a alterar
+    SELECT * FROM vw_convites_usuario
+    WHERE destinatario_id = 0;
 
 -- ---
 
@@ -50,6 +68,7 @@ FROM documento
 JOIN documento_versao ON documento_versao.documento_id = documento.id
 JOIN categoria ON categoria.id = documento.categoria_id
 JOIN projeto ON categoria.projeto_id = projeto.id
+WHERE documento.deletado_em IS NULL AND projeto.deletado_em IS NULL
 ORDER BY ultima_edicao DESC;
 
 	-- Exemplo de uso
@@ -57,10 +76,7 @@ ORDER BY ultima_edicao DESC;
     -- Substitua o 5 pela quantidade de documentos que você quer puxar
 	SELECT
 		id, projeto, categoria, documento, MAX(ultima_edicao) AS ultima_edicao
-    FROM vw_documentos_recentes
-	WHERE criador_id = 0
-	GROUP BY id
-    LIMIT 5;
+    FROM vw_documentos_recentes;
 
 -- ---
 
@@ -122,7 +138,7 @@ ORDER BY nivel_acesso_id;
     
 -- View para buscar a lista de convidados pendentes de um projeto
 -- o objetivo é usar essa como uma subview, ter uma view maior que vai puxar essa como um array
-DROP VIEW IF EXISTS vw_convites_pendentes_projeto;
+DROP VIEW IF EXISTS vw_convites_pendentes_projetos;
 CREATE VIEW vw_convites_pendentes_projetos AS
 SELECT
     usuario.id AS usuario_id,
@@ -192,8 +208,8 @@ FROM projeto;
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
 CREATE VIEW vw_reunioes_com_usuarios AS
-SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
-	GROUP_CONCAT(usuario.foto_perfil) AS foto_usuarios
+	SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
+	JSON_ARRAYAGG(usuario.foto_perfil) AS foto_usuarios
 FROM reuniao
 JOIN reuniao_usuario ON reuniao_usuario.reuniao_id = reuniao.id
 JOIN usuario ON reuniao_usuario.usuario_id = usuario_id
@@ -222,9 +238,10 @@ SELECT
             'ultima_alteracao', (SELECT dv.criado_em FROM documento_versao dv WHERE dv.documento_id = d.id ORDER BY criado_em DESC LIMIT 1)
 		  )
 		) FROM documento d
-        WHERE d.categoria_id = c.id
+        WHERE d.categoria_id = c.id AND d.deletado_em IS NULL
 	), JSON_ARRAY()) AS documentos
-FROM categoria c;
+FROM categoria c
+WHERE c.deletado_em IS NULL;
 
 -- Exemplo de utilização:
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
