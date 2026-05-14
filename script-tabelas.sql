@@ -247,6 +247,7 @@ CREATE TABLE categoria (
     id INT PRIMARY KEY AUTO_INCREMENT,
     titulo VARCHAR(100) NOT NULL,
     projeto_id INT NOT NULL,
+    deletado_em TIMESTAMP NULL,
 
 	CONSTRAINT fk_categoria_projeto
     FOREIGN KEY (projeto_id) REFERENCES projeto(id)

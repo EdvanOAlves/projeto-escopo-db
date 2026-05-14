@@ -158,7 +158,7 @@ BEGIN
     END IF;
 END$$
 -- Exemplo de uso
--- CALL atualizar_convite(:convite_id, :usuario_id, :nivel_acesso_id);
+-- CALL atualizar_convite(:convite_id, :usuario_id, :novo_status);
 
 
 

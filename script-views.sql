@@ -68,7 +68,7 @@ FROM documento
 JOIN documento_versao ON documento_versao.documento_id = documento.id
 JOIN categoria ON categoria.id = documento.categoria_id
 JOIN projeto ON categoria.projeto_id = projeto.id
-WHERE deletado_em IS NULL
+WHERE documento.deletado_em IS NULL AND projeto.deletado_em IS NULL
 ORDER BY ultima_edicao DESC;
 
 	-- Exemplo de uso
@@ -208,8 +208,8 @@ FROM projeto;
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
 CREATE VIEW vw_reunioes_com_usuarios AS
-SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
-	GROUP_CONCAT(usuario.foto_perfil) AS foto_usuarios
+	SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
+	JSON_ARRAYAGG(usuario.foto_perfil) AS foto_usuarios
 FROM reuniao
 JOIN reuniao_usuario ON reuniao_usuario.reuniao_id = reuniao.id
 JOIN usuario ON reuniao_usuario.usuario_id = usuario_id
@@ -238,9 +238,10 @@ SELECT
             'ultima_alteracao', (SELECT dv.criado_em FROM documento_versao dv WHERE dv.documento_id = d.id ORDER BY criado_em DESC LIMIT 1)
 		  )
 		) FROM documento d
-        WHERE d.categoria_id = c.id
+        WHERE d.categoria_id = c.id AND d.deletado_em IS NULL
 	), JSON_ARRAY()) AS documentos
-FROM categoria c;
+FROM categoria c
+WHERE c.deletado_em IS NULL;
 
 -- Exemplo de utilização:
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
