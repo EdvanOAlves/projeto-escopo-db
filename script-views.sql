@@ -5,7 +5,18 @@ DROP VIEW IF EXISTS vw_projetos_com_usuarios;
 CREATE VIEW vw_projetos_com_usuarios AS
 SELECT
 	projeto.id, projeto.titulo, projeto.descricao,
-	JSON_ARRAYAGG(usuario.foto_perfil) AS foto_usuarios
+    (
+        SELECT JSON_ARRAYAGG(foto_perfil)
+        FROM (
+            SELECT usuario.foto_perfil
+            FROM usuario_projeto
+            JOIN usuario
+                ON usuario.id = usuario_projeto.usuario_id
+            WHERE usuario_projeto.projeto_id = projeto.id
+            ORDER BY usuario.foto_perfil IS NULL, usuario.id
+            LIMIT 4
+        ) fotos
+    ) AS foto_usuarios
 FROM projeto
 JOIN usuario_projeto ON usuario_projeto.projeto_id = projeto.id
 JOIN usuario ON usuario_projeto.usuario_id = usuario.id
@@ -209,7 +220,18 @@ FROM projeto;
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
 CREATE VIEW vw_reunioes_com_usuarios AS
 	SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
-	JSON_ARRAYAGG(usuario.foto_perfil) AS foto_usuarios
+    (
+        SELECT JSON_ARRAYAGG(fotos.foto_perfil)
+        FROM (
+            SELECT usuario.foto_perfil
+            FROM reuniao_usuario
+            JOIN usuario
+                ON reuniao_usuario.usuario_id = usuario.id
+            WHERE reuniao_usuario.reuniao_id = reuniao.id
+            ORDER BY usuario.foto_perfil IS NULL, usuario.id
+            LIMIT 4
+        ) fotos
+    ) AS foto_usuarios
 FROM reuniao
 JOIN reuniao_usuario ON reuniao_usuario.reuniao_id = reuniao.id
 JOIN usuario ON reuniao_usuario.usuario_id = usuario_id
