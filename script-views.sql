@@ -20,6 +20,7 @@ SELECT
 FROM projeto
 JOIN usuario_projeto ON usuario_projeto.projeto_id = projeto.id
 JOIN usuario ON usuario_projeto.usuario_id = usuario.id
+WHERE projeto.deletado_em IS NULL
 GROUP BY projeto.id, projeto.titulo, projeto.descricao;
 
 	-- Exemplo de uso da view
@@ -55,7 +56,7 @@ JOIN projeto
   ON convite.projeto_id = projeto.id
 JOIN usuario
   ON convite.remetente_id = usuario.id
-WHERE convite_status_id IN (1, 4)
+WHERE convite_status_id IN (1, 4) AND projeto.deletado_em IS NULL
 ORDER BY criado_em DESC;
 
 	-- Exemplo de uso
@@ -87,7 +88,8 @@ ORDER BY ultima_edicao DESC;
     -- Substitua o 5 pela quantidade de documentos que você quer puxar
 	SELECT
 		id, projeto, categoria, documento, MAX(ultima_edicao) AS ultima_edicao
-    FROM vw_documentos_recentes;
+    FROM vw_documentos_recentes WHERE criador_id = 0
+    GROUP BY id;
 
 -- ---
 
@@ -164,7 +166,8 @@ SELECT
 FROM convite
 JOIN usuario ON convite.destinatario_id = usuario.id
 JOIN nivel_acesso ON convite.nivel_acesso_id = nivel_acesso.id
-WHERE convite_status_id = 1
+JOIN projeto ON convite.projeto_id = projeto.id
+WHERE convite_status_id = 1 AND projeto.deletado_em IS NULL
 ORDER BY convite.nivel_acesso_id;
 
 	-- Exemplo de uso da view

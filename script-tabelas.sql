@@ -180,6 +180,7 @@ CREATE TABLE reuniao_usuario (
     
     CONSTRAINT fk_reuniao_usuario_reuniao
     FOREIGN KEY (reuniao_id) REFERENCES reuniao(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE convidado_reuniao (
@@ -190,6 +191,7 @@ CREATE TABLE convidado_reuniao (
 
 	CONSTRAINT fk_convidado_reuniao_reuniao
     FOREIGN KEY (reuniao_id) REFERENCES reuniao(id)
+    ON DELETE CASCADE
 );
 
 	-- ======================
@@ -214,6 +216,7 @@ CREATE TABLE link (
     FOREIGN KEY (tipo_link_id) REFERENCES tipo_link(id),
     CONSTRAINT fk_link_reuniao
     FOREIGN KEY (reuniao_id) REFERENCES reuniao(id)
+    ON DELETE CASCADE
 );
 
 -- ----------------------

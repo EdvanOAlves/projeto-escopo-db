@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_escopo`;
--- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -266,7 +266,7 @@ CREATE TABLE `convidado_reuniao` (
   `reuniao_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_convidado_reuniao_reuniao` (`reuniao_id`),
-  CONSTRAINT `fk_convidado_reuniao_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`)
+  CONSTRAINT `fk_convidado_reuniao_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -276,7 +276,7 @@ CREATE TABLE `convidado_reuniao` (
 
 LOCK TABLES `convidado_reuniao` WRITE;
 /*!40000 ALTER TABLE `convidado_reuniao` DISABLE KEYS */;
-INSERT INTO `convidado_reuniao` VALUES (1,'Mozart','Compositor Musical',1),(2,'Ana Souza','Cliente',1),(3,'Carlos Mendes','Consultor Externo',1),(4,'Adalberto Lima','Cliente Profissional',2),(5,'Fernanda Alves','Product Owner',2),(6,'Ricardo Gomes','Diretor',3),(7,'Juliana Castro','Stakeholder',3),(8,'Patrícia Lima','Especialista de Negócio',3),(9,'Bruno Rocha','Investidor',4),(10,'Camila Freitas','UX Researcher',4),(11,'Eduardo Martins','Arquiteto de Software',5),(12,'Larissa Nogueira','Analista de Sistemas',5),(13,'Roberto Dias','Consultor Técnico',5),(14,'Marcos Vinicius','Scrum Advisor',6),(15,'Aline Ribeiro','Agile Coach',6),(16,'Thiago Fernandes','RH',7),(17,'Beatriz Cardoso','Coordenadora',7),(18,'Gustavo Pinto','Mentor',7),(19,'Renata Teixeira','Designer',8),(20,'Felipe Barros','Inovação',8),(21,'Sérgio Lopes','Cliente Final',9),(22,'Vanessa Duarte','Gerente Comercial',9),(23,'Hugo Carvalho','Consultor Estratégico',9),(24,'Daniela Moura','Stakeholder',10),(25,'Lucas Tavares','Engenheiro de Software',10),(26,'Paulo Henrique','Analista de Negócios',11),(27,'Tatiane Gomes','Cliente',11),(28,'Igor Santana','Consultor',11),(29,'Rafaela Campos','Product Manager',12),(30,'Diego Azevedo','Tech Lead',12);
+INSERT INTO `convidado_reuniao` VALUES (1,'Mozart','Compositor Musical',1),(2,'Ana Souza','Cliente',1),(3,'Carlos Mendes','Consultor Externo',1),(6,'Ricardo Gomes','Diretor',3),(7,'Juliana Castro','Stakeholder',3),(8,'Patrícia Lima','Especialista de Negócio',3),(9,'Bruno Rocha','Investidor',4),(10,'Camila Freitas','UX Researcher',4),(11,'Eduardo Martins','Arquiteto de Software',5),(12,'Larissa Nogueira','Analista de Sistemas',5),(13,'Roberto Dias','Consultor Técnico',5),(14,'Marcos Vinicius','Scrum Advisor',6),(15,'Aline Ribeiro','Agile Coach',6),(16,'Thiago Fernandes','RH',7),(17,'Beatriz Cardoso','Coordenadora',7),(18,'Gustavo Pinto','Mentor',7),(19,'Renata Teixeira','Designer',8),(20,'Felipe Barros','Inovação',8),(21,'Sérgio Lopes','Cliente Final',9),(22,'Vanessa Duarte','Gerente Comercial',9),(23,'Hugo Carvalho','Consultor Estratégico',9),(24,'Daniela Moura','Stakeholder',10),(25,'Lucas Tavares','Engenheiro de Software',10),(26,'Paulo Henrique','Analista de Negócios',11),(27,'Tatiane Gomes','Cliente',11),(28,'Igor Santana','Consultor',11),(29,'Rafaela Campos','Product Manager',12),(30,'Diego Azevedo','Tech Lead',12);
 /*!40000 ALTER TABLE `convidado_reuniao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,7 +447,7 @@ CREATE TABLE `link` (
   PRIMARY KEY (`id`),
   KEY `fk_link_tipo_link` (`tipo_link_id`),
   KEY `fk_link_reuniao` (`reuniao_id`),
-  CONSTRAINT `fk_link_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`),
+  CONSTRAINT `fk_link_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_link_tipo_link` FOREIGN KEY (`tipo_link_id`) REFERENCES `tipo_link` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -458,7 +458,7 @@ CREATE TABLE `link` (
 
 LOCK TABLES `link` WRITE;
 /*!40000 ALTER TABLE `link` DISABLE KEYS */;
-INSERT INTO `link` VALUES (1,'https://meet.google.com/aaa-111','Google Meet',1,1),(2,'https://docs.google.com/document/d/aaa1','Documento Inicial',2,1),(3,'https://meet.google.com/bbb-222','Google Meet',1,2),(4,'https://docs.google.com/document/d/bbb2','Requisitos',2,2),(5,'https://miro.com/app/board/bbb2','Quadro Miro',2,2),(6,'https://meet.google.com/ccc-333','Google Meet',1,3),(7,'https://teams.microsoft.com/l/meetup-join/ddd-444','Microsoft Teams',1,4),(8,'https://docs.google.com/presentation/d/ddd4','Apresentação',2,4),(9,'https://meet.google.com/eee-555','Google Meet',1,5),(10,'https://docs.google.com/document/d/eee5','Funcionalidades',2,5),(11,'https://zoom.us/j/fff-666','Zoom',1,6),(12,'https://jira.com/browse/fff6','Tarefas Jira',2,6),(13,'https://confluence.com/display/fff6','Documentação',2,6),(14,'https://meet.google.com/ggg-777','Google Meet',1,7),(15,'https://meet.google.com/hhh-888','Google Meet',1,8),(16,'https://miro.com/app/board/hhh8','Brainstorming',2,8),(17,'https://teams.microsoft.com/l/meetup-join/iii-999','Microsoft Teams',1,9),(18,'https://docs.google.com/document/d/iii9','Decisão Final',2,9),(19,'https://meet.google.com/jjj-101','Google Meet',1,10),(20,'https://docs.google.com/presentation/d/jjj10','Kickoff Slides',2,10),(21,'https://zoom.us/j/kkk-202','Zoom',1,11),(22,'https://docs.google.com/document/d/kkk11','Levantamento',2,11),(23,'https://miro.com/app/board/kkk11','Mapa de Requisitos',2,11),(24,'https://teams.microsoft.com/l/meetup-join/lll-303','Microsoft Teams',1,12),(25,'https://jira.com/browse/lll12','Planejamento Sprint',2,12);
+INSERT INTO `link` VALUES (1,'https://meet.google.com/aaa-111','Google Meet',1,1),(2,'https://docs.google.com/document/d/aaa1','Documento Inicial',2,1),(6,'https://meet.google.com/ccc-333','Google Meet',1,3),(7,'https://teams.microsoft.com/l/meetup-join/ddd-444','Microsoft Teams',1,4),(8,'https://docs.google.com/presentation/d/ddd4','Apresentação',2,4),(9,'https://meet.google.com/eee-555','Google Meet',1,5),(10,'https://docs.google.com/document/d/eee5','Funcionalidades',2,5),(11,'https://zoom.us/j/fff-666','Zoom',1,6),(12,'https://jira.com/browse/fff6','Tarefas Jira',2,6),(13,'https://confluence.com/display/fff6','Documentação',2,6),(14,'https://meet.google.com/ggg-777','Google Meet',1,7),(15,'https://meet.google.com/hhh-888','Google Meet',1,8),(16,'https://miro.com/app/board/hhh8','Brainstorming',2,8),(17,'https://teams.microsoft.com/l/meetup-join/iii-999','Microsoft Teams',1,9),(18,'https://docs.google.com/document/d/iii9','Decisão Final',2,9),(19,'https://meet.google.com/jjj-101','Google Meet',1,10),(20,'https://docs.google.com/presentation/d/jjj10','Kickoff Slides',2,10),(21,'https://zoom.us/j/kkk-202','Zoom',1,11),(22,'https://docs.google.com/document/d/kkk11','Levantamento',2,11),(23,'https://miro.com/app/board/kkk11','Mapa de Requisitos',2,11),(24,'https://teams.microsoft.com/l/meetup-join/lll-303','Microsoft Teams',1,12),(25,'https://jira.com/browse/lll12','Planejamento Sprint',2,12);
 /*!40000 ALTER TABLE `link` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -682,7 +682,7 @@ CREATE TABLE `reuniao` (
 
 LOCK TABLES `reuniao` WRITE;
 /*!40000 ALTER TABLE `reuniao` DISABLE KEYS */;
-INSERT INTO `reuniao` VALUES (1,'Reunião Kickoff','Discussão inicial do projeto...','2025-01-02 03:00:00',1),(2,'Reunião de Requisitos','Detalhamento das funcionalidades...','2025-01-01 06:00:00',1),(3,'Reunião de Validação','Aprovação com cliente...','2025-01-01 09:00:00',1),(4,'Kickoff do App','Alinhamento inicial...','2025-02-12 16:00:00',2),(5,'Reunião de Funcionalidades','Discussão das features...','2025-02-11 19:00:00',2),(6,'Revisão de Progresso','Acompanhamento do desenvolvimento...','2025-02-11 22:00:00',2),(7,'Formação do Time','Organização inicial...','2025-04-01 15:10:00',3),(8,'Discussão de Ideias','Brainstorming...','2025-04-01 15:30:00',3),(9,'Definição Final','Escolha da solução...','2025-04-01 16:00:00',3),(10,'Kickoff Escopo','Apresentação do projeto...','2026-02-28 14:30:00',4),(11,'Levantamento de Requisitos','Discussão com stakeholders...','2026-02-27 17:30:00',4),(12,'Planejamento de Entregas','Definição das sprints...','2026-02-27 20:30:00',4);
+INSERT INTO `reuniao` VALUES (1,'Reunião Kickoff','Discussão inicial do projeto...','2025-01-02 03:00:00',1),(3,'Reunião de Validação','Aprovação com cliente...','2025-01-01 09:00:00',1),(4,'Kickoff do App','Alinhamento inicial...','2025-02-12 16:00:00',2),(5,'Reunião de Funcionalidades','Discussão das features...','2025-02-11 19:00:00',2),(6,'Revisão de Progresso','Acompanhamento do desenvolvimento...','2025-02-11 22:00:00',2),(7,'Formação do Time','Organização inicial...','2025-04-01 15:10:00',3),(8,'Discussão de Ideias','Brainstorming...','2025-04-01 15:30:00',3),(9,'Definição Final','Escolha da solução...','2025-04-01 16:00:00',3),(10,'Kickoff Escopo','Apresentação do projeto...','2026-02-28 14:30:00',4),(11,'Levantamento de Requisitos','Discussão com stakeholders...','2026-02-27 17:30:00',4),(12,'Planejamento de Entregas','Definição das sprints...','2026-02-27 20:30:00',4);
 /*!40000 ALTER TABLE `reuniao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -701,7 +701,7 @@ CREATE TABLE `reuniao_usuario` (
   PRIMARY KEY (`id`),
   KEY `fk_reuniao_usuario_usuario` (`usuario_id`),
   KEY `fk_reuniao_usuario_reuniao` (`reuniao_id`),
-  CONSTRAINT `fk_reuniao_usuario_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`),
+  CONSTRAINT `fk_reuniao_usuario_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_reuniao_usuario_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -712,7 +712,7 @@ CREATE TABLE `reuniao_usuario` (
 
 LOCK TABLES `reuniao_usuario` WRITE;
 /*!40000 ALTER TABLE `reuniao_usuario` DISABLE KEYS */;
-INSERT INTO `reuniao_usuario` VALUES (1,1,1,'Gerente de Projeto'),(2,2,1,'Desenvolvedor'),(3,3,1,'Analista'),(4,1,2,'Gerente de Projeto'),(5,2,2,'Desenvolvedor'),(6,3,2,'Analista'),(7,1,3,'Gerente de Projeto'),(8,2,3,'Desenvolvedor'),(9,3,3,'Analista'),(10,1,5,'Gerente de Projeto'),(11,3,5,'Analista'),(12,1,8,'Gerente de Projeto'),(13,3,8,'Analista'),(14,2,4,'Gerente de Projeto'),(15,5,4,'Desenvolvedor'),(16,6,4,'Scrum Master'),(17,2,5,'Gerente de Projeto'),(18,5,5,'Desenvolvedor'),(19,2,6,'Gerente de Projeto'),(20,5,6,'Desenvolvedor'),(21,3,7,'Gerente de Projeto'),(22,1,7,'Stakeholder'),(23,3,8,'Gerente de Projeto'),(24,1,8,'Stakeholder'),(25,3,9,'Gerente de Projeto'),(26,1,9,'Stakeholder'),(27,4,10,'Gerente de Projeto'),(28,2,10,'Desenvolvedor'),(29,4,11,'Gerente de Projeto'),(30,2,11,'Desenvolvedor'),(31,4,12,'Gerente de Projeto'),(32,2,12,'Desenvolvedor'),(33,1,1,'Stakeholder'),(34,2,1,'QA'),(35,1,2,'Stakeholder'),(36,3,2,'QA'),(37,1,3,'Stakeholder'),(38,2,3,'QA'),(39,2,4,'QA'),(40,5,4,'UX'),(41,2,5,'QA'),(42,5,5,'UX'),(43,2,6,'QA'),(44,5,6,'UX'),(45,3,7,'QA'),(46,1,7,'UX'),(47,3,8,'QA'),(48,1,8,'UX'),(49,3,9,'QA'),(50,1,9,'UX'),(51,4,10,'QA'),(52,2,10,'UX'),(53,4,11,'QA'),(54,2,11,'UX'),(55,4,12,'QA'),(56,2,12,'UX');
+INSERT INTO `reuniao_usuario` VALUES (1,1,1,'Gerente de Projeto'),(2,2,1,'Desenvolvedor'),(3,3,1,'Analista'),(7,1,3,'Gerente de Projeto'),(8,2,3,'Desenvolvedor'),(9,3,3,'Analista'),(10,1,5,'Gerente de Projeto'),(11,3,5,'Analista'),(12,1,8,'Gerente de Projeto'),(13,3,8,'Analista'),(14,2,4,'Gerente de Projeto'),(15,5,4,'Desenvolvedor'),(16,6,4,'Scrum Master'),(17,2,5,'Gerente de Projeto'),(18,5,5,'Desenvolvedor'),(19,2,6,'Gerente de Projeto'),(20,5,6,'Desenvolvedor'),(21,3,7,'Gerente de Projeto'),(22,1,7,'Stakeholder'),(23,3,8,'Gerente de Projeto'),(24,1,8,'Stakeholder'),(25,3,9,'Gerente de Projeto'),(26,1,9,'Stakeholder'),(27,4,10,'Gerente de Projeto'),(28,2,10,'Desenvolvedor'),(29,4,11,'Gerente de Projeto'),(30,2,11,'Desenvolvedor'),(31,4,12,'Gerente de Projeto'),(32,2,12,'Desenvolvedor'),(33,1,1,'Stakeholder'),(34,2,1,'QA'),(37,1,3,'Stakeholder'),(38,2,3,'QA'),(39,2,4,'QA'),(40,5,4,'UX'),(41,2,5,'QA'),(42,5,5,'UX'),(43,2,6,'QA'),(44,5,6,'UX'),(45,3,7,'QA'),(46,1,7,'UX'),(47,3,8,'QA'),(48,1,8,'UX'),(49,3,9,'QA'),(50,1,9,'UX'),(51,4,10,'QA'),(52,2,10,'UX'),(53,4,11,'QA'),(54,2,11,'UX'),(55,4,12,'QA'),(56,2,12,'UX');
 /*!40000 ALTER TABLE `reuniao_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1433,7 +1433,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_convites_pendentes_projetos` AS select `usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`convite`.`id` AS `convite_id`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso`,`convite`.`criado_em` AS `convidado_em` from ((`convite` join `usuario` on((`convite`.`destinatario_id` = `usuario`.`id`))) join `nivel_acesso` on((`convite`.`nivel_acesso_id` = `nivel_acesso`.`id`))) where (`convite`.`convite_status_id` = 1) order by `convite`.`nivel_acesso_id` */;
+/*!50001 VIEW `vw_convites_pendentes_projetos` AS select `usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`convite`.`id` AS `convite_id`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso`,`convite`.`criado_em` AS `convidado_em` from (((`convite` join `usuario` on((`convite`.`destinatario_id` = `usuario`.`id`))) join `nivel_acesso` on((`convite`.`nivel_acesso_id` = `nivel_acesso`.`id`))) join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) where ((`convite`.`convite_status_id` = 1) and (`projeto`.`deletado_em` is null)) order by `convite`.`nivel_acesso_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1451,7 +1451,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_convites_usuario` AS select `convite`.`id` AS `id`,`usuario`.`nome` AS `nome_remetente`,`projeto`.`titulo` AS `projeto`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,coalesce((select json_object('id',`convite_status`.`id`,'nome',`convite_status`.`nome`) from `convite_status` where (`convite`.`convite_status_id` = `convite_status`.`id`)),json_object()) AS `status` from ((`convite` join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`convite`.`remetente_id` = `usuario`.`id`))) where (`convite`.`convite_status_id` in (1,4)) order by `convite`.`criado_em` desc */;
+/*!50001 VIEW `vw_convites_usuario` AS select `convite`.`id` AS `id`,`usuario`.`nome` AS `nome_remetente`,`projeto`.`titulo` AS `projeto`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,coalesce((select json_object('id',`convite_status`.`id`,'nome',`convite_status`.`nome`) from `convite_status` where (`convite`.`convite_status_id` = `convite_status`.`id`)),json_object()) AS `status` from ((`convite` join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`convite`.`remetente_id` = `usuario`.`id`))) where ((`convite`.`convite_status_id` in (1,4)) and (`projeto`.`deletado_em` is null)) order by `convite`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1541,7 +1541,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,(select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`usuario_projeto` join `usuario` on((`usuario`.`id` = `usuario_projeto`.`usuario_id`))) where (`usuario_projeto`.`projeto_id` = `projeto`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`) AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
+/*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,(select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`usuario_projeto` join `usuario` on((`usuario`.`id` = `usuario_projeto`.`usuario_id`))) where (`usuario_projeto`.`projeto_id` = `projeto`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`) AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) where (`projeto`.`deletado_em` is null) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1627,4 +1627,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-14 21:13:06
+-- Dump completed on 2026-05-18 11:00:40
