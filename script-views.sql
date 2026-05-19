@@ -111,9 +111,9 @@ FROM projeto
 JOIN usuario ON usuario.id = projeto.criador_id
 
 -- Para puxar a ultima alteração
-JOIN categoria ON categoria.projeto_id = projeto.id
-JOIN documento ON documento.categoria_id = categoria.id
-JOIN documento_versao ON documento_versao.documento_id = documento.id
+LEFT JOIN categoria ON categoria.projeto_id = projeto.id
+LEFT JOIN documento ON documento.categoria_id = categoria.id
+LEFT JOIN documento_versao ON documento_versao.documento_id = documento.id
 GROUP BY id;
 
 	-- Exemplo de uso
