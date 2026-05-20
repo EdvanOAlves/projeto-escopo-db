@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.20
+-- Server version	8.0.27
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -600,7 +600,7 @@ CREATE TABLE `projeto` (
 
 LOCK TABLES `projeto` WRITE;
 /*!40000 ALTER TABLE `projeto` DISABLE KEYS */;
-INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1,NULL),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5,NULL),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6,NULL),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11,NULL),(5,'asdasd','asdasd','2026-05-13 22:39:47',1,11,NULL),(6,'Projeto de verão','Renovação de portfolio','2026-05-19 14:20:36',1,5,NULL);
+INSERT INTO `projeto` VALUES (1,'Sistema de Gestão','Plataforma web para gestão de requisitos','2025-01-01 03:00:00',1,1,NULL),(2,'App Delivery','Aplicativo mobile de delivery','2025-02-11 15:00:00',1,5,NULL),(3,'Hackaton 2026','Plataforma para resolver o desafio proposto pela banca','2025-04-01 14:00:00',1,6,NULL),(4,'Projeto Escopo','Plataforma colaborativa de documentos para auxiliar no levantamento de requisitos e desenvolvimento de projetos de software','2026-02-27 13:30:00',1,11,NULL),(5,'asdasd','asdasd','2026-05-13 22:39:47',0,11,NULL),(6,'Projeto de verão','Renovação de portfolio','2026-05-19 14:20:36',1,5,NULL);
 /*!40000 ALTER TABLE `projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -796,7 +796,7 @@ CREATE TABLE `usuario_projeto` (
 
 LOCK TABLES `usuario_projeto` WRITE;
 /*!40000 ALTER TABLE `usuario_projeto` DISABLE KEYS */;
-INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2),(17,3,2,2),(18,11,5,1),(19,5,6,1);
+INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2),(17,3,2,2),(19,5,6,1);
 /*!40000 ALTER TABLE `usuario_projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1625,4 +1625,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-19 11:26:59
+-- Dump completed on 2026-05-20  8:10:46
