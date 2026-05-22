@@ -271,6 +271,58 @@ WHERE c.deletado_em IS NULL;
 -- Exemplo de utilização:
 SELECT id, nome, documentos FROM vw_categorias_com_documentos WHERE projeto_id = 1;
 
+-- VIEW DE DOCUMENTOS DO PROJETO COM TRATATIVA ADEQUADA
+DROP VIEW IF EXISTS vw_projeto_com_categorias_documentos;
+CREATE VIEW vw_projeto_com_categorias_documentos AS
+SELECT
+    p.id AS projeto_id,
+    JSON_OBJECT(
+        'id', p.id,
+        'categorias',
+        COALESCE(
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', c.id,
+                        'nome', c.titulo,
+                        'documentos',
+                        COALESCE(
+                            (
+                                SELECT JSON_ARRAYAGG(
+                                    JSON_OBJECT(
+                                        'id', d.id,
+                                        'titulo', d.titulo,
+                                        'quantidade_versoes',
+                                        (
+                                            SELECT COUNT(dv.id)
+                                            FROM documento_versao dv
+                                            WHERE dv.documento_id = d.id
+                                        ),
+                                        'ultima_alteracao',
+                                        (
+                                            SELECT dv.criado_em
+                                            FROM documento_versao dv
+                                            WHERE dv.documento_id = d.id
+                                            ORDER BY dv.criado_em DESC
+                                            LIMIT 1
+                                        )
+                                    )
+                                )
+                                FROM documento d
+                                WHERE d.categoria_id = c.id
+                            ),
+                            JSON_ARRAY()
+                        )
+                    )
+                )
+                FROM categoria c
+                WHERE c.projeto_id = p.id AND c.deletado_em IS NULL
+            ),
+            JSON_ARRAY()
+        )
+    ) AS projeto
+FROM projeto p;
+
 -- ---
 -- View de Comentários
 DROP VIEW IF EXISTS vw_comentarios;

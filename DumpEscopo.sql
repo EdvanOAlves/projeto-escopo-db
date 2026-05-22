@@ -1521,7 +1521,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_projeto_com_categorias_documentos` AS select `p`.`id` AS `projeto_id`,json_object('id',`p`.`id`,'categorias',coalesce((select json_arrayagg(json_object('id',`c`.`id`,'nome',`c`.`titulo`,'documentos',coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where (`d`.`categoria_id` = `c`.`id`)),json_array()))) from `categoria` `c` where (`c`.`projeto_id` = `p`.`id`)),json_array())) AS `projeto` from `projeto` `p` */;
+/*!50001 VIEW `vw_projeto_com_categorias_documentos` AS select `p`.`id` AS `projeto_id`,json_object('id',`p`.`id`,'categorias',coalesce((select json_arrayagg(json_object('id',`c`.`id`,'nome',`c`.`titulo`,'documentos',coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where (`d`.`categoria_id` = `c`.`id`)),json_array()))) from `categoria` `c` where ((`c`.`projeto_id` = `p`.`id`) and (`c`.`deletado_em` is null))),json_array())) AS `projeto` from `projeto` `p` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1625,4 +1625,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-20  8:10:46
+-- Dump completed on 2026-05-22  9:38:18
