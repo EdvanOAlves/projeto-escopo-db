@@ -154,11 +154,11 @@ ORDER BY nivel_acesso_id;
 DROP VIEW IF EXISTS vw_convites_pendentes_projetos;
 CREATE VIEW vw_convites_pendentes_projetos AS
 SELECT
+	convite.id AS convite_id,
     usuario.id AS usuario_id,
     usuario.nome,
     usuario.email,
     usuario.foto_perfil,
-	convite.id AS convite_id,
     convite.projeto_id AS projeto_id,
     convite.nivel_acesso_id,
     nivel_acesso.nome AS nivel_acesso,
@@ -198,6 +198,7 @@ SELECT projeto.id AS projeto_id,
     COALESCE((
 		SELECT JSON_ARRAYAGG(
 			JSON_OBJECT(
+					'convite_id', convite_id,
 					'usuario_id',usuario_id,
 					'nome', nome,
 					'email', email,

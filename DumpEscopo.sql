@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `db_escopo`;
 -- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
@@ -861,11 +863,11 @@ DROP TABLE IF EXISTS `vw_convites_pendentes_projetos`;
 SET @saved_cs_client     = @@character_set_client;
 /*!50503 SET character_set_client = utf8mb4 */;
 /*!50001 CREATE VIEW `vw_convites_pendentes_projetos` AS SELECT 
+ 1 AS `convite_id`,
  1 AS `usuario_id`,
  1 AS `nome`,
  1 AS `email`,
  1 AS `foto_perfil`,
- 1 AS `convite_id`,
  1 AS `projeto_id`,
  1 AS `nivel_acesso_id`,
  1 AS `nivel_acesso`,
@@ -1431,7 +1433,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_convites_pendentes_projetos` AS select `usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`convite`.`id` AS `convite_id`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso`,`convite`.`criado_em` AS `convidado_em` from (((`convite` join `usuario` on((`convite`.`destinatario_id` = `usuario`.`id`))) join `nivel_acesso` on((`convite`.`nivel_acesso_id` = `nivel_acesso`.`id`))) join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) where ((`convite`.`convite_status_id` = 1) and (`projeto`.`deletado_em` is null)) order by `convite`.`nivel_acesso_id` */;
+/*!50001 VIEW `vw_convites_pendentes_projetos` AS select `convite`.`id` AS `convite_id`,`usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso`,`convite`.`criado_em` AS `convidado_em` from (((`convite` join `usuario` on((`convite`.`destinatario_id` = `usuario`.`id`))) join `nivel_acesso` on((`convite`.`nivel_acesso_id` = `nivel_acesso`.`id`))) join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) where ((`convite`.`convite_status_id` = 1) and (`projeto`.`deletado_em` is null)) order by `convite`.`nivel_acesso_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1611,7 +1613,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_usuarios_projetos` AS select `projeto`.`id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('usuario_id',`vw_participantes_projetos`.`usuario_id`,'nome',`vw_participantes_projetos`.`nome`,'email',`vw_participantes_projetos`.`email`,'foto_perfil',`vw_participantes_projetos`.`foto_perfil`,'usuario_projeto_id',`vw_participantes_projetos`.`usuario_projeto_id`,'projeto_id',`vw_participantes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_participantes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_participantes_projetos`.`nivel_acesso`)) from `vw_participantes_projetos` where (`vw_participantes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `participantes`,coalesce((select json_arrayagg(json_object('usuario_id',`vw_convites_pendentes_projetos`.`usuario_id`,'nome',`vw_convites_pendentes_projetos`.`nome`,'email',`vw_convites_pendentes_projetos`.`email`,'foto_perfil',`vw_convites_pendentes_projetos`.`foto_perfil`,'projeto_id',`vw_convites_pendentes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_convites_pendentes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_convites_pendentes_projetos`.`nivel_acesso`,'convidado_em',`vw_convites_pendentes_projetos`.`convidado_em`)) from `vw_convites_pendentes_projetos` where (`vw_convites_pendentes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `pendentes` from `projeto` */;
+/*!50001 VIEW `vw_usuarios_projetos` AS select `projeto`.`id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('usuario_id',`vw_participantes_projetos`.`usuario_id`,'nome',`vw_participantes_projetos`.`nome`,'email',`vw_participantes_projetos`.`email`,'foto_perfil',`vw_participantes_projetos`.`foto_perfil`,'usuario_projeto_id',`vw_participantes_projetos`.`usuario_projeto_id`,'projeto_id',`vw_participantes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_participantes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_participantes_projetos`.`nivel_acesso`)) from `vw_participantes_projetos` where (`vw_participantes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `participantes`,coalesce((select json_arrayagg(json_object('convite_id',`vw_convites_pendentes_projetos`.`convite_id`,'usuario_id',`vw_convites_pendentes_projetos`.`usuario_id`,'nome',`vw_convites_pendentes_projetos`.`nome`,'email',`vw_convites_pendentes_projetos`.`email`,'foto_perfil',`vw_convites_pendentes_projetos`.`foto_perfil`,'projeto_id',`vw_convites_pendentes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_convites_pendentes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_convites_pendentes_projetos`.`nivel_acesso`,'convidado_em',`vw_convites_pendentes_projetos`.`convidado_em`)) from `vw_convites_pendentes_projetos` where (`vw_convites_pendentes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `pendentes` from `projeto` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1625,4 +1627,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-22  9:38:18
+-- Dump completed on 2026-05-25 10:43:26
