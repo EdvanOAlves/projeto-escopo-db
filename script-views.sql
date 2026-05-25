@@ -337,7 +337,8 @@ SELECT comentario.id,
 			'parent_autor_id', comentario_respondido.criador_id,
 			'parent_autor_nome', usuario_parent.nome,
 			'parent_autor_nivel_acesso_id', usuario_projeto_parent.nivel_acesso_id,
-            'parent_autor_nivel_acesso', nivel_acesso_parent.nome
+            'parent_autor_nivel_acesso', nivel_acesso_parent.nome,
+            'parent_conteudo', comentario_respondido.conteudo
 		)
         FROM comentario AS comentario_respondido
 		JOIN usuario AS usuario_parent ON comentario_respondido.criador_id = usuario_parent.id
