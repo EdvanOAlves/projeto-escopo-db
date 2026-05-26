@@ -223,23 +223,27 @@ FROM projeto;
 -- Para a lista de reuniões
 DROP VIEW IF EXISTS vw_reunioes_com_usuarios;
 CREATE VIEW vw_reunioes_com_usuarios AS
-	SELECT reuniao.id, reuniao.titulo, reuniao.criado_em, reuniao.projeto_id,
-    (
-        SELECT JSON_ARRAYAGG(fotos.foto_perfil)
-        FROM (
-            SELECT usuario.foto_perfil
-            FROM reuniao_usuario
-            JOIN usuario
-                ON reuniao_usuario.usuario_id = usuario.id
-            WHERE reuniao_usuario.reuniao_id = reuniao.id
-            ORDER BY usuario.foto_perfil IS NULL, usuario.id
-            LIMIT 4
-        ) fotos
+SELECT
+    reuniao.id,
+    reuniao.titulo,
+    reuniao.criado_em,
+    reuniao.projeto_id,
+    COALESCE(
+        (
+            SELECT JSON_ARRAYAGG(fotos.foto_perfil)
+            FROM (
+                SELECT usuario.foto_perfil
+                FROM reuniao_usuario
+                JOIN usuario
+                    ON usuario.id = reuniao_usuario.usuario_id
+                WHERE reuniao_usuario.reuniao_id = reuniao.id
+                ORDER BY usuario.foto_perfil IS NULL, usuario.id
+                LIMIT 4
+            ) fotos
+        ),
+        JSON_ARRAY()
     ) AS foto_usuarios
-FROM reuniao
-JOIN reuniao_usuario ON reuniao_usuario.reuniao_id = reuniao.id
-JOIN usuario ON reuniao_usuario.usuario_id = usuario_id
-GROUP BY reuniao_id;
+FROM reuniao;
 
 	-- Exemplo de uso da view
     -- -- Substitua o 0 pelo id de projeto a consultar

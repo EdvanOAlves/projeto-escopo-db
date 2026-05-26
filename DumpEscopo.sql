@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `db_escopo`;
--- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.20
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -1595,7 +1593,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_reunioes_com_usuarios` AS select `reuniao`.`id` AS `id`,`reuniao`.`titulo` AS `titulo`,`reuniao`.`criado_em` AS `criado_em`,`reuniao`.`projeto_id` AS `projeto_id`,(select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`reuniao_usuario` join `usuario` on((`reuniao_usuario`.`usuario_id` = `usuario`.`id`))) where (`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`) AS `foto_usuarios` from ((`reuniao` join `reuniao_usuario` on((`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`))) join `usuario` on((`reuniao_usuario`.`usuario_id` = `reuniao_usuario`.`usuario_id`))) group by `reuniao_usuario`.`reuniao_id` */;
+/*!50001 VIEW `vw_reunioes_com_usuarios` AS select `reuniao`.`id` AS `id`,`reuniao`.`titulo` AS `titulo`,`reuniao`.`criado_em` AS `criado_em`,`reuniao`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`reuniao_usuario` join `usuario` on((`usuario`.`id` = `reuniao_usuario`.`usuario_id`))) where (`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`),json_array()) AS `foto_usuarios` from `reuniao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1627,4 +1625,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-05-25 11:12:41
+-- Dump completed on 2026-05-26 11:11:31
