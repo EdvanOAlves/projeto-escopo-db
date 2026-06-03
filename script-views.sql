@@ -314,7 +314,7 @@ SELECT
                                     )
                                 )
                                 FROM documento d
-                                WHERE d.categoria_id = c.id
+                                WHERE d.categoria_id = c.id AND d.deletado_em IS NULL
                             ),
                             JSON_ARRAY()
                         )
