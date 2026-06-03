@@ -636,7 +636,7 @@ CREATE TABLE `registro` (
   `titulo` varchar(150) NOT NULL,
   `criado_em` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `atualizado_em` timestamp NULL DEFAULT NULL,
-  `conteudo` text NOT NULL,
+  `conteudo` text,
   `criador_id` int NOT NULL,
   `projeto_id` int NOT NULL,
   PRIMARY KEY (`id`),
@@ -1650,4 +1650,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-03 10:18:47
+-- Dump completed on 2026-06-03 11:25:34
