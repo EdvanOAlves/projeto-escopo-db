@@ -313,7 +313,8 @@ CREATE TABLE comentario (
     CONSTRAINT fk_comentario_parent_id
     FOREIGN KEY (parent_id) REFERENCES comentario(id),
     CONSTRAINT fk_comentario_registro_referencia
-    FOREIGN KEY (registro_referencia_id) REFERENCES registro(id),
+    FOREIGN KEY (registro_referencia_id) REFERENCES registro(id)
+		ON DELETE SET NULL,
     CONSTRAINT fk_comentario_usuario_criador
     FOREIGN KEY (criador_id) REFERENCES usuario(id),
     CONSTRAINT fk_comentario_documento

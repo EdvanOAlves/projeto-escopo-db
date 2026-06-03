@@ -47,18 +47,19 @@ BEGIN
     AND documento_versao.criador_id != NEW.criador_id;
 END$$
 
+DROP TRIGGER IF EXISTS trg_usuario_soft_delete$$
 CREATE TRIGGER trg_usuario_soft_delete
 AFTER UPDATE ON usuario
 FOR EACH ROW
 BEGIN
-    IF NEW.status = 0 IS NOT NULL AND OLD.deletado_em IS NULL THEN
+    IF NEW.status = 0 AND OLD.deletado_em IS NULL THEN
         UPDATE usuario
-        SET deletado_em CURRENT_DATE
+        SET deletado_em = CURRENT_DATE
         WHERE id = NEW.id;
         -- Seria interesante deixar uma foto reutilizavel pra isso, já serviria de indicação visual para os usuarios
     END IF;
     DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
-END;
+END$$
 
 CREATE TRIGGER trg_registro_update
 AFTER UPDATE ON registro
