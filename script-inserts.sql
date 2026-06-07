@@ -281,13 +281,10 @@ INSERT INTO reuniao(titulo, transcricao, projeto_id, criado_em) VALUES
 
 -- REUNIAO_USUARIO
 INSERT INTO reuniao_usuario(usuario_id, reuniao_id, cargo) VALUES
+-- Projeto 1
 (1, 1, 'Gerente de Projeto'),
 (2, 1, 'Desenvolvedor'),
 (3, 1, 'Analista'),
-
-(1, 2, 'Gerente de Projeto'),
-(2, 2, 'Desenvolvedor'),
-(3, 2, 'Analista'),
 
 (1, 3, 'Gerente de Projeto'),
 (2, 3, 'Desenvolvedor'),
@@ -311,61 +308,30 @@ INSERT INTO reuniao_usuario(usuario_id, reuniao_id, cargo) VALUES
 (5, 6, 'Desenvolvedor'),
 
 -- Projeto 3
-(3, 7, 'Gerente de Projeto'),
-(1, 7, 'Stakeholder'),
+(6, 7, 'Gerente de Projeto'),
+(5, 7, 'Stakeholder'),
 
-(3, 8, 'Gerente de Projeto'),
-(1, 8, 'Stakeholder'),
+(8, 8, 'Gerente de Projeto'),
+(5, 8, 'Stakeholder'),
 
-(3, 9, 'Gerente de Projeto'),
-(1, 9, 'Stakeholder'),
+(6, 9, 'Gerente de Projeto'),
+(5, 9, 'Stakeholder'),
 
 -- Projeto 4
-(4, 10, 'Gerente de Projeto'),
-(2, 10, 'Desenvolvedor'),
+(10, 10, 'Responsável Mobile'),
+(11, 10, 'Responsável Banco de Dados'),
+(12, 10, 'Responsável Back-end'),
+(13, 10, 'Responsável Front-end'),
 
-(4, 11, 'Gerente de Projeto'),
-(2, 11, 'Desenvolvedor'),
+(10, 11, 'Responsável Mobile'),
+(11, 11, 'Responsável Banco de Dados'),
+(12, 11, 'Responsável Back-end'),
+(13, 11, 'Responsável Front-end'),
 
-(4, 12, 'Gerente de Projeto'),
-(2, 12, 'Desenvolvedor'),
-
--- Reforçando combinações adicionais válidas
-(1, 1, 'Stakeholder'),
-(2, 1, 'QA'),
-
-(1, 2, 'Stakeholder'),
-(3, 2, 'QA'),
-
-(1, 3, 'Stakeholder'),
-(2, 3, 'QA'),
-
-(2, 4, 'QA'),
-(5, 4, 'UX'),
-
-(2, 5, 'QA'),
-(5, 5, 'UX'),
-
-(2, 6, 'QA'),
-(5, 6, 'UX'),
-
-(3, 7, 'QA'),
-(1, 7, 'UX'),
-
-(3, 8, 'QA'),
-(1, 8, 'UX'),
-
-(3, 9, 'QA'),
-(1, 9, 'UX'),
-
-(4, 10, 'QA'),
-(2, 10, 'UX'),
-
-(4, 11, 'QA'),
-(2, 11, 'UX'),
-
-(4, 12, 'QA'),
-(2, 12, 'UX');
+(10, 12, 'Responsável Mobile'),
+(11, 12, 'Responsável Banco de Dados'),
+(12, 12, 'Responsável Back-end'),
+(13, 12, 'Responsável Front-end');
 
 -- CONVIDADO_REUNIAO
 INSERT INTO convidado_reuniao(nome, cargo, reuniao_id) VALUES
@@ -373,10 +339,6 @@ INSERT INTO convidado_reuniao(nome, cargo, reuniao_id) VALUES
 ('Mozart', 'Compositor Musical', 1),
 ('Ana Souza', 'Cliente', 1),
 ('Carlos Mendes', 'Consultor Externo', 1),
-
--- Reunião 2
-('Adalberto Lima', 'Cliente Profissional', 2),
-('Fernanda Alves', 'Product Owner', 2),
 
 -- Reunião 3
 ('Ricardo Gomes', 'Diretor', 3),
@@ -411,17 +373,19 @@ INSERT INTO convidado_reuniao(nome, cargo, reuniao_id) VALUES
 ('Hugo Carvalho', 'Consultor Estratégico', 9),
 
 -- Reunião 10
-('Daniela Moura', 'Stakeholder', 10),
-('Lucas Tavares', 'Engenheiro de Software', 10),
+('Marcel', 'Professor de Testes', 10),
+('Yuri', 'Professora de IOT', 10),
+('João', 'Professor de Mobile', 10),
+('Fernando Leonid', 'Professor de Front-end', 10),
 
 -- Reunião 11
-('Paulo Henrique', 'Analista de Negócios', 11),
-('Tatiane Gomes', 'Cliente', 11),
-('Igor Santana', 'Consultor', 11),
+('Yuri', 'Professora de IOT', 11),
+('João', 'Professor de Mobile', 11),
+('Fernando Leonid', 'Professor de Front-end', 11),
 
 -- Reunião 12
-('Rafaela Campos', 'Product Manager', 12),
-('Diego Azevedo', 'Tech Lead', 12);
+('Yuri', 'Professora de IOT', 12),
+('João', 'Professor de Mobile', 12);
 
 -- LINKS
 INSERT INTO link(url, nome, tipo_link_id, reuniao_id) VALUES

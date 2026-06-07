@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `db_escopo` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `db_escopo`;
--- MySQL dump 10.13  Distrib 8.0.42, for macos15 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: db_escopo
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -267,7 +267,7 @@ CREATE TABLE `convidado_reuniao` (
   PRIMARY KEY (`id`),
   KEY `fk_convidado_reuniao_reuniao` (`reuniao_id`),
   CONSTRAINT `fk_convidado_reuniao_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -276,7 +276,7 @@ CREATE TABLE `convidado_reuniao` (
 
 LOCK TABLES `convidado_reuniao` WRITE;
 /*!40000 ALTER TABLE `convidado_reuniao` DISABLE KEYS */;
-INSERT INTO `convidado_reuniao` VALUES (1,'Mozart','Compositor Musical',1),(2,'Ana Souza','Cliente',1),(3,'Carlos Mendes','Consultor Externo',1),(6,'Ricardo Gomes','Diretor',3),(7,'Juliana Castro','Stakeholder',3),(8,'Patrícia Lima','Especialista de Negócio',3),(9,'Bruno Rocha','Investidor',4),(10,'Camila Freitas','UX Researcher',4),(11,'Eduardo Martins','Arquiteto de Software',5),(12,'Larissa Nogueira','Analista de Sistemas',5),(13,'Roberto Dias','Consultor Técnico',5),(14,'Marcos Vinicius','Scrum Advisor',6),(15,'Aline Ribeiro','Agile Coach',6),(16,'Thiago Fernandes','RH',7),(17,'Beatriz Cardoso','Coordenadora',7),(18,'Gustavo Pinto','Mentor',7),(19,'Renata Teixeira','Designer',8),(20,'Felipe Barros','Inovação',8),(21,'Sérgio Lopes','Cliente Final',9),(22,'Vanessa Duarte','Gerente Comercial',9),(23,'Hugo Carvalho','Consultor Estratégico',9),(24,'Daniela Moura','Stakeholder',10),(25,'Lucas Tavares','Engenheiro de Software',10),(26,'Paulo Henrique','Analista de Negócios',11),(27,'Tatiane Gomes','Cliente',11),(28,'Igor Santana','Consultor',11),(29,'Rafaela Campos','Product Manager',12),(30,'Diego Azevedo','Tech Lead',12);
+INSERT INTO `convidado_reuniao` VALUES (31,'Mozart','Compositor Musical',1),(32,'Ana Souza','Cliente',1),(33,'Carlos Mendes','Consultor Externo',1),(34,'Ricardo Gomes','Diretor',3),(35,'Juliana Castro','Stakeholder',3),(36,'Patrícia Lima','Especialista de Negócio',3),(37,'Bruno Rocha','Investidor',4),(38,'Camila Freitas','UX Researcher',4),(39,'Eduardo Martins','Arquiteto de Software',5),(40,'Larissa Nogueira','Analista de Sistemas',5),(41,'Roberto Dias','Consultor Técnico',5),(42,'Marcos Vinicius','Scrum Advisor',6),(43,'Aline Ribeiro','Agile Coach',6),(44,'Thiago Fernandes','RH',7),(45,'Beatriz Cardoso','Coordenadora',7),(46,'Gustavo Pinto','Mentor',7),(47,'Renata Teixeira','Designer',8),(48,'Felipe Barros','Inovação',8),(49,'Sérgio Lopes','Cliente Final',9),(50,'Vanessa Duarte','Gerente Comercial',9),(51,'Hugo Carvalho','Consultor Estratégico',9),(52,'Marcel','Professor de Testes',10),(53,'Yuri','Professora de IOT',10),(54,'João','Professor de Mobile',10),(55,'Fernando Leonid','Professor de Front-end',10),(56,'Yuri','Professora de IOT',11),(57,'João','Professor de Mobile',11),(58,'Fernando Leonid','Professor de Front-end',11),(59,'Yuri','Professora de IOT',12),(60,'João','Professor de Mobile',12);
 /*!40000 ALTER TABLE `convidado_reuniao` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -703,7 +703,7 @@ CREATE TABLE `reuniao_usuario` (
   KEY `fk_reuniao_usuario_reuniao` (`reuniao_id`),
   CONSTRAINT `fk_reuniao_usuario_reuniao` FOREIGN KEY (`reuniao_id`) REFERENCES `reuniao` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_reuniao_usuario_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -712,7 +712,7 @@ CREATE TABLE `reuniao_usuario` (
 
 LOCK TABLES `reuniao_usuario` WRITE;
 /*!40000 ALTER TABLE `reuniao_usuario` DISABLE KEYS */;
-INSERT INTO `reuniao_usuario` VALUES (1,1,1,'Gerente de Projeto'),(2,2,1,'Desenvolvedor'),(3,3,1,'Analista'),(7,1,3,'Gerente de Projeto'),(8,2,3,'Desenvolvedor'),(9,3,3,'Analista'),(10,1,5,'Gerente de Projeto'),(11,3,5,'Analista'),(12,1,8,'Gerente de Projeto'),(13,3,8,'Analista'),(14,2,4,'Gerente de Projeto'),(15,5,4,'Desenvolvedor'),(16,6,4,'Scrum Master'),(17,2,5,'Gerente de Projeto'),(18,5,5,'Desenvolvedor'),(19,2,6,'Gerente de Projeto'),(20,5,6,'Desenvolvedor'),(21,3,7,'Gerente de Projeto'),(22,1,7,'Stakeholder'),(23,3,8,'Gerente de Projeto'),(24,1,8,'Stakeholder'),(25,3,9,'Gerente de Projeto'),(26,1,9,'Stakeholder'),(27,4,10,'Gerente de Projeto'),(28,2,10,'Desenvolvedor'),(29,4,11,'Gerente de Projeto'),(30,2,11,'Desenvolvedor'),(31,4,12,'Gerente de Projeto'),(32,2,12,'Desenvolvedor'),(33,1,1,'Stakeholder'),(34,2,1,'QA'),(37,1,3,'Stakeholder'),(38,2,3,'QA'),(39,2,4,'QA'),(40,5,4,'UX'),(41,2,5,'QA'),(42,5,5,'UX'),(43,2,6,'QA'),(44,5,6,'UX'),(45,3,7,'QA'),(46,1,7,'UX'),(47,3,8,'QA'),(48,1,8,'UX'),(49,3,9,'QA'),(50,1,9,'UX'),(51,4,10,'QA'),(52,2,10,'UX'),(53,4,11,'QA'),(54,2,11,'UX'),(55,4,12,'QA'),(56,2,12,'UX');
+INSERT INTO `reuniao_usuario` VALUES (57,1,1,'Gerente de Projeto'),(58,2,1,'Desenvolvedor'),(59,3,1,'Analista'),(60,1,3,'Gerente de Projeto'),(61,2,3,'Desenvolvedor'),(62,3,3,'Analista'),(63,1,5,'Gerente de Projeto'),(64,3,5,'Analista'),(65,1,8,'Gerente de Projeto'),(66,3,8,'Analista'),(67,2,4,'Gerente de Projeto'),(68,5,4,'Desenvolvedor'),(69,6,4,'Scrum Master'),(70,2,5,'Gerente de Projeto'),(71,5,5,'Desenvolvedor'),(72,2,6,'Gerente de Projeto'),(73,5,6,'Desenvolvedor'),(74,6,7,'Gerente de Projeto'),(75,5,7,'Stakeholder'),(76,8,8,'Gerente de Projeto'),(77,5,8,'Stakeholder'),(78,6,9,'Gerente de Projeto'),(79,5,9,'Stakeholder'),(80,10,10,'Responsável Mobile'),(81,11,10,'Responsável Banco de Dados'),(82,12,10,'Responsável Back-end'),(83,13,10,'Responsável Front-end'),(84,10,11,'Responsável Mobile'),(85,11,11,'Responsável Banco de Dados'),(86,12,11,'Responsável Back-end'),(87,13,11,'Responsável Front-end'),(88,10,12,'Responsável Mobile'),(89,11,12,'Responsável Banco de Dados'),(90,12,12,'Responsável Back-end'),(91,13,12,'Responsável Front-end');
 /*!40000 ALTER TABLE `reuniao_usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1650,4 +1650,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-03 11:25:34
+-- Dump completed on 2026-06-07 19:32:48
