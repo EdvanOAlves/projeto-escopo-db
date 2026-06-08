@@ -85,11 +85,18 @@ ORDER BY ultima_edicao DESC;
 
 	-- Exemplo de uso
 	-- Substitua o 0 pelo id de usuario a consultar
-    -- Substitua o 5 pela quantidade de documentos que você quer puxar
-	SELECT
-		id, projeto, categoria, documento, MAX(ultima_edicao) AS ultima_edicao
-    FROM vw_documentos_recentes WHERE criador_id = 0
-    GROUP BY id;
+SELECT
+    id,
+    projeto,
+    categoria,
+    documento,
+    MAX(ultima_edicao) AS ultima_edicao
+		FROM vw_documentos_recentes
+		WHERE criador_id = 0
+	GROUP BY
+	id, projeto, categoria, documento
+ORDER BY
+    MAX(ultima_edicao) DESC;
 
 -- ---
 
