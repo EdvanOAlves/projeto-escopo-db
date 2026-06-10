@@ -2,21 +2,22 @@ USE db_escopo;
 
 -- USUARIOS
 INSERT INTO usuario(nome, email, senha, foto_perfil) VALUES
-('Ana Livia', 'ana@email.com', '12345678', 'foto_ana'),
-('Larissa Lemos', 'larissa@email.com', '12345678', 'foto_larissa'),
-('Marcos Santos', 'marcos@email.com', '12345678', 'foto_marcos'),
-('Carlos Ribeiro', 'carlos@email.com', '12345678', 'foto_carlos'),
-('João Silva', 'joao@email.com', '12345678', 'foto_joao'),
-('Maria Souza', 'maria@email.com', '12345678', 'foto_maria'),
-('Bernardo Pereira', 'bernardo@email.com', '12345678', 'foto_bernardo'),
-('Manuela Ferreira', 'manuela@email.com', '12345678', 'foto_manuela'),
-('Amanda Costa', 'amanda@email.com', '12345678', 'foto_amanda'),
-('André Roberto', 'andre@email.com', '12345678', 'url_foto_andré'),
-('Edvan Alves', 'edvan@email.com', '12345678' ,'url_foto_edvan'),
-('Nathan da Silva', 'nathan@email.com', '12345678', 'url_foto_nathan'),
-('Samara Rolim', 'samara@email.com', '12345678', 'url_foto_samara'),
-('Estagiário', 'estagiario@email.com', '12345678', 'url_foto_estagiario'),
-('Professor', 'professor@email.com', '12345678', 'url_foto_professor')
+('Ana Livia', 'ana@email.com', '[dado_teste]', 'foto_ana'),
+('Larissa Lemos', 'larissa@email.com', '[dado_teste]', 'foto_larissa'),
+('Marcos Santos', 'marcos@email.com', '[dado_teste]', 'foto_marcos'),
+('Carlos Ribeiro', 'carlos@email.com', '[dado_teste]', 'foto_carlos'),
+('João Silva', 'joao@email.com', '[dado_teste]', 'foto_joao'),
+('Maria Souza', 'maria@email.com', '[dado_teste]', 'foto_maria'),
+('Bernardo Pereira', 'bernardo@email.com', '[dado_teste]', 'foto_bernardo'),
+('Manuela Ferreira', 'manuela@email.com', '[dado_teste]', 'foto_manuela'),
+('Amanda Costa', 'amanda@email.com', '[dado_teste]', 'foto_amanda'),
+('André Roberto', 'andre@escopo.com', '[dado_teste]', 'https://uploadescopo.blob.core.windows.net/uploadescopofotos/1781094370784image 2-recortada.jpg'),
+('Edvan Alves', 'edvan@escopo.com', '[dado_teste]' ,'https://uploadescopo.blob.core.windows.net/uploadescopofotos/1781094273262IMG_20260608_194103209_HDR 1-recortada.jpg'),
+('Nathan da Silva', 'nathan@escopo.com', '[dado_teste]', 'https://uploadescopo.blob.core.windows.net/uploadescopofotos/1781094311122image 4-recortada.jpg'),
+('Samara Rolim', 'samara@escopo.com', '[dado_teste]', 'https://uploadescopo.blob.core.windows.net/uploadescopofotos/1781094348702image 3-recortada.jpg'),
+('Estagiário', 'estagiario@escopo.com', '[dado_teste]', 'url_foto_estagiario'),
+('Professor', 'professor@escopo.com', '[dado_teste]', 'url_foto_professor'),
+('Convidado Representante', 'convidado@escopo.com', '[dado_teste]', 'url_foto_convidado')
 ;
 
 -- PROJETOS
