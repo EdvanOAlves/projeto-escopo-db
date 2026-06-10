@@ -821,7 +821,7 @@ CREATE TABLE `usuario_projeto` (
 
 LOCK TABLES `usuario_projeto` WRITE;
 /*!40000 ALTER TABLE `usuario_projeto` DISABLE KEYS */;
-INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(17,3,2,2),(19,5,6,1);
+INSERT INTO `usuario_projeto` VALUES (1,1,1,1),(2,5,2,1),(3,6,3,1),(4,11,4,1),(5,2,1,1),(6,3,1,2),(7,4,1,3),(8,5,1,4),(9,1,2,2),(10,6,2,2),(11,7,2,4),(12,8,3,1),(13,5,3,3),(14,10,4,2),(15,12,4,2),(16,13,4,2),(17,3,2,2),(19,5,6,1);
 /*!40000 ALTER TABLE `usuario_projeto` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1650,4 +1650,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-10  9:39:40
+-- Dump completed on 2026-06-10 10:38:40
