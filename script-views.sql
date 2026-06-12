@@ -340,7 +340,7 @@ FROM projeto p;
 DROP VIEW IF EXISTS vw_comentarios;
 CREATE VIEW vw_comentarios AS
 SELECT comentario.id,
-	comentario.criador_id AS autor_id, usuario.nome AS autor_nome,
+	comentario.criador_id AS autor_id, usuario.nome AS autor_nome, usuario.foto_perfil AS foto_perfil,
     comentario.conteudo AS conteudo, comentario.documento_id, comentario.criado_em,
     COALESCE(
 		(SELECT JSON_OBJECT(

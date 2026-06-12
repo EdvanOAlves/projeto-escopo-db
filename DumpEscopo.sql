@@ -852,6 +852,7 @@ SET @saved_cs_client     = @@character_set_client;
  1 AS `id`,
  1 AS `autor_id`,
  1 AS `autor_nome`,
+ 1 AS `foto_perfil`,
  1 AS `conteudo`,
  1 AS `documento_id`,
  1 AS `criado_em`,
@@ -1420,7 +1421,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `vw_comentarios` AS select `comentario`.`id` AS `id`,`comentario`.`criador_id` AS `autor_id`,`usuario`.`nome` AS `autor_nome`,`comentario`.`conteudo` AS `conteudo`,`comentario`.`documento_id` AS `documento_id`,`comentario`.`criado_em` AS `criado_em`,coalesce((select json_object('parent_id',`comentario_respondido`.`id`,'parent_autor_id',`comentario_respondido`.`criador_id`,'parent_autor_nome',`usuario_parent`.`nome`,'parent_autor_nivel_acesso_id',`usuario_projeto_parent`.`nivel_acesso_id`,'parent_autor_nivel_acesso',`nivel_acesso_parent`.`nome`,'parent_conteudo',`comentario_respondido`.`conteudo`) from (((`comentario` `comentario_respondido` join `usuario` `usuario_parent` on((`comentario_respondido`.`criador_id` = `usuario_parent`.`id`))) join `usuario_projeto` `usuario_projeto_parent` on((`comentario_respondido`.`criador_id` = `usuario_projeto_parent`.`usuario_id`))) join `nivel_acesso` `nivel_acesso_parent` on((`usuario_projeto_parent`.`nivel_acesso_id` = `nivel_acesso_parent`.`id`))) where ((`comentario_respondido`.`id` = `comentario`.`parent_id`) and (`usuario_projeto_parent`.`projeto_id` = `projeto`.`id`))),json_object()) AS `parent`,coalesce((select json_object('registro_id',`registro`.`id`,'registro_titulo',`registro`.`titulo`) from `registro` where (`comentario`.`registro_referencia_id` = `registro`.`id`)),json_object()) AS `registro` from ((((`comentario` join `usuario` on((`comentario`.`criador_id` = `usuario`.`id`))) join `documento` on((`comentario`.`documento_id` = `documento`.`id`))) join `categoria` on((`documento`.`categoria_id` = `categoria`.`id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) order by `comentario`.`criado_em` desc */;
+/*!50001 VIEW `vw_comentarios` AS select `comentario`.`id` AS `id`,`comentario`.`criador_id` AS `autor_id`,`usuario`.`nome` AS `autor_nome`,`usuario`.`foto_perfil` AS `foto_perfil`,`comentario`.`conteudo` AS `conteudo`,`comentario`.`documento_id` AS `documento_id`,`comentario`.`criado_em` AS `criado_em`,coalesce((select json_object('parent_id',`comentario_respondido`.`id`,'parent_autor_id',`comentario_respondido`.`criador_id`,'parent_autor_nome',`usuario_parent`.`nome`,'parent_autor_nivel_acesso_id',`usuario_projeto_parent`.`nivel_acesso_id`,'parent_autor_nivel_acesso',`nivel_acesso_parent`.`nome`,'parent_conteudo',`comentario_respondido`.`conteudo`) from (((`comentario` `comentario_respondido` join `usuario` `usuario_parent` on((`comentario_respondido`.`criador_id` = `usuario_parent`.`id`))) join `usuario_projeto` `usuario_projeto_parent` on((`comentario_respondido`.`criador_id` = `usuario_projeto_parent`.`usuario_id`))) join `nivel_acesso` `nivel_acesso_parent` on((`usuario_projeto_parent`.`nivel_acesso_id` = `nivel_acesso_parent`.`id`))) where ((`comentario_respondido`.`id` = `comentario`.`parent_id`) and (`usuario_projeto_parent`.`projeto_id` = `projeto`.`id`))),json_object()) AS `parent`,coalesce((select json_object('registro_id',`registro`.`id`,'registro_titulo',`registro`.`titulo`) from `registro` where (`comentario`.`registro_referencia_id` = `registro`.`id`)),json_object()) AS `registro` from ((((`comentario` join `usuario` on((`comentario`.`criador_id` = `usuario`.`id`))) join `documento` on((`comentario`.`documento_id` = `documento`.`id`))) join `categoria` on((`documento`.`categoria_id` = `categoria`.`id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) order by `comentario`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -1650,4 +1651,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-12  9:23:07
+-- Dump completed on 2026-06-12  9:59:02
