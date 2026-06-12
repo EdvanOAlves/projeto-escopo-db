@@ -205,7 +205,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_comentario_notificacao` AFTER INSERT ON `comentario` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50003 TRIGGER `trg_comentario_notificacao` AFTER INSERT ON `comentario` FOR EACH ROW BEGIN
     INSERT INTO notificacao (descricao, comentario_id, usuario_id)
     SELECT DISTINCT
         CONCAT(
@@ -327,7 +327,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_convite_aceito` AFTER UPDATE ON `convite` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50003 TRIGGER `trg_convite_aceito` AFTER UPDATE ON `convite` FOR EACH ROW BEGIN
 		-- Caso um convite pendente seja aceito
         IF OLD.convite_status_id = 1 AND NEW.convite_status_id = 6 THEN 
             
@@ -614,7 +614,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_projeto_criado` AFTER INSERT ON `projeto` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50003 TRIGGER `trg_projeto_criado` AFTER INSERT ON `projeto` FOR EACH ROW BEGIN
         INSERT INTO usuario_projeto(usuario_id, projeto_id, nivel_acesso_id)
         VALUES (NEW.criador_id, NEW.id, 1);
     END */;;
@@ -778,7 +778,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `trg_usuario_soft_delete` AFTER UPDATE ON `usuario` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50003 TRIGGER `trg_usuario_soft_delete` AFTER UPDATE ON `usuario` FOR EACH ROW BEGIN
     IF NEW.status = 0 AND OLD.deletado_em IS NULL THEN
         UPDATE usuario
         SET deletado_em = CURRENT_DATE
@@ -1076,7 +1076,7 @@ SET character_set_client = @saved_cs_client;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `atualizar_convite`(
+CREATE PROCEDURE `atualizar_convite`(
     IN p_convite_id INT,
     IN p_usuario_id INT,
     IN p_novo_status_id INT
@@ -1182,7 +1182,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criar_comentario`(
+CREATE PROCEDURE `criar_comentario`(
     IN p_conteudo TEXT,
     IN p_parent_id INT,
     IN p_registro_referencia_id INT,
@@ -1286,7 +1286,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `criar_usuario`(
+CREATE PROCEDURE `criar_usuario`(
     IN u_nome VARCHAR(100),
     IN u_email VARCHAR(150),
     IN u_senha VARCHAR(255)
@@ -1326,7 +1326,7 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `enviar_convite`(
+CREATE PROCEDURE `enviar_convite`(
 	IN in_projeto_id INT,
 	IN in_destinatario_id INT,
     IN in_nivel_acesso_id INT,
@@ -1401,7 +1401,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_categorias_com_documentos` AS select `c`.`id` AS `id`,`c`.`titulo` AS `nome`,`c`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where ((`d`.`categoria_id` = `c`.`id`) and (`d`.`deletado_em` is null))),json_array()) AS `documentos` from `categoria` `c` where (`c`.`deletado_em` is null) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1419,7 +1418,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_comentarios` AS select `comentario`.`id` AS `id`,`comentario`.`criador_id` AS `autor_id`,`usuario`.`nome` AS `autor_nome`,`comentario`.`conteudo` AS `conteudo`,`comentario`.`documento_id` AS `documento_id`,`comentario`.`criado_em` AS `criado_em`,coalesce((select json_object('parent_id',`comentario_respondido`.`id`,'parent_autor_id',`comentario_respondido`.`criador_id`,'parent_autor_nome',`usuario_parent`.`nome`,'parent_autor_nivel_acesso_id',`usuario_projeto_parent`.`nivel_acesso_id`,'parent_autor_nivel_acesso',`nivel_acesso_parent`.`nome`,'parent_conteudo',`comentario_respondido`.`conteudo`) from (((`comentario` `comentario_respondido` join `usuario` `usuario_parent` on((`comentario_respondido`.`criador_id` = `usuario_parent`.`id`))) join `usuario_projeto` `usuario_projeto_parent` on((`comentario_respondido`.`criador_id` = `usuario_projeto_parent`.`usuario_id`))) join `nivel_acesso` `nivel_acesso_parent` on((`usuario_projeto_parent`.`nivel_acesso_id` = `nivel_acesso_parent`.`id`))) where ((`comentario_respondido`.`id` = `comentario`.`parent_id`) and (`usuario_projeto_parent`.`projeto_id` = `projeto`.`id`))),json_object()) AS `parent`,coalesce((select json_object('registro_id',`registro`.`id`,'registro_titulo',`registro`.`titulo`) from `registro` where (`comentario`.`registro_referencia_id` = `registro`.`id`)),json_object()) AS `registro` from ((((`comentario` join `usuario` on((`comentario`.`criador_id` = `usuario`.`id`))) join `documento` on((`comentario`.`documento_id` = `documento`.`id`))) join `categoria` on((`documento`.`categoria_id` = `categoria`.`id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) order by `comentario`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1437,7 +1435,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_convites_ativos` AS select `convite`.`id` AS `id`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`convite`.`remetente_id` AS `remetente_id`,`convite`.`convite_status_id` AS `convite_status_id` from `convite` where ((`convite`.`convite_status_id` = 1) or (`convite`.`convite_status_id` = 4)) order by `convite`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1455,7 +1452,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_convites_pendentes_projetos` AS select `convite`.`id` AS `convite_id`,`usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso`,`convite`.`criado_em` AS `convidado_em` from (((`convite` join `usuario` on((`convite`.`destinatario_id` = `usuario`.`id`))) join `nivel_acesso` on((`convite`.`nivel_acesso_id` = `nivel_acesso`.`id`))) join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) where ((`convite`.`convite_status_id` = 1) and (`projeto`.`deletado_em` is null)) order by `convite`.`nivel_acesso_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1473,7 +1469,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_convites_usuario` AS select `convite`.`id` AS `id`,`usuario`.`nome` AS `nome_remetente`,`projeto`.`titulo` AS `projeto`,`convite`.`criado_em` AS `criado_em`,`convite`.`projeto_id` AS `projeto_id`,`convite`.`destinatario_id` AS `destinatario_id`,coalesce((select json_object('id',`convite_status`.`id`,'nome',`convite_status`.`nome`) from `convite_status` where (`convite`.`convite_status_id` = `convite_status`.`id`)),json_object()) AS `status` from ((`convite` join `projeto` on((`convite`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`convite`.`remetente_id` = `usuario`.`id`))) where ((`convite`.`convite_status_id` in (1,4)) and (`projeto`.`deletado_em` is null)) order by `convite`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1491,7 +1486,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_documento_detalhes` AS select `d`.`id` AS `id`,`d`.`titulo` AS `titulo`,`c`.`titulo` AS `categoria`,`p`.`titulo` AS `projeto`,`dv`.`conteudo` AS `conteudo`,`dv`.`criado_em` AS `ultima_alteracao` from (((`documento` `d` join `categoria` `c` on((`d`.`categoria_id` = `c`.`id`))) join `projeto` `p` on((`p`.`id` = `c`.`projeto_id`))) join `documento_versao` `dv` on((`dv`.`documento_id` = `d`.`id`))) where (`dv`.`id` = (select `dv2`.`id` from `documento_versao` `dv2` where (`dv2`.`documento_id` = `d`.`id`) order by `dv2`.`criado_em` desc,`dv2`.`id` desc limit 1)) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1509,7 +1503,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_documentos_recentes` AS select `documento`.`id` AS `id`,`projeto`.`titulo` AS `projeto`,`categoria`.`titulo` AS `categoria`,`documento`.`titulo` AS `documento`,`documento_versao`.`criado_em` AS `ultima_edicao`,`documento_versao`.`criador_id` AS `criador_id` from (((`documento` join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) join `categoria` on((`categoria`.`id` = `documento`.`categoria_id`))) join `projeto` on((`categoria`.`projeto_id` = `projeto`.`id`))) where ((`documento`.`deletado_em` is null) and (`projeto`.`deletado_em` is null)) order by `documento_versao`.`criado_em` desc */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1527,7 +1520,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_participantes_projetos` AS select `usuario`.`id` AS `usuario_id`,`usuario`.`nome` AS `nome`,`usuario`.`email` AS `email`,`usuario`.`foto_perfil` AS `foto_perfil`,`usuario_projeto`.`id` AS `usuario_projeto_id`,`usuario_projeto`.`projeto_id` AS `projeto_id`,`usuario_projeto`.`nivel_acesso_id` AS `nivel_acesso_id`,`nivel_acesso`.`nome` AS `nivel_acesso` from ((`usuario_projeto` join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) join `nivel_acesso` on((`usuario_projeto`.`nivel_acesso_id` = `nivel_acesso`.`id`))) where (`usuario`.`status` = 1) order by `usuario_projeto`.`nivel_acesso_id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1545,7 +1537,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_projeto_com_categorias_documentos` AS select `p`.`id` AS `projeto_id`,json_object('id',`p`.`id`,'categorias',coalesce((select json_arrayagg(json_object('id',`c`.`id`,'nome',`c`.`titulo`,'documentos',coalesce((select json_arrayagg(json_object('id',`d`.`id`,'titulo',`d`.`titulo`,'quantidade_versoes',(select count(`dv`.`id`) from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`)),'ultima_alteracao',(select `dv`.`criado_em` from `documento_versao` `dv` where (`dv`.`documento_id` = `d`.`id`) order by `dv`.`criado_em` desc limit 1))) from `documento` `d` where ((`d`.`categoria_id` = `c`.`id`) and (`d`.`deletado_em` is null))),json_array()))) from `categoria` `c` where ((`c`.`projeto_id` = `p`.`id`) and (`c`.`deletado_em` is null))),json_array())) AS `projeto` from `projeto` `p` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1563,7 +1554,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_projetos_com_usuarios` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,(select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`usuario_projeto` join `usuario` on((`usuario`.`id` = `usuario_projeto`.`usuario_id`))) where (`usuario_projeto`.`projeto_id` = `projeto`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`) AS `foto_usuarios` from ((`projeto` join `usuario_projeto` on((`usuario_projeto`.`projeto_id` = `projeto`.`id`))) join `usuario` on((`usuario_projeto`.`usuario_id` = `usuario`.`id`))) where (`projeto`.`deletado_em` is null) group by `projeto`.`id`,`projeto`.`titulo`,`projeto`.`descricao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1581,7 +1571,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_projetos_detalhes` AS select `projeto`.`id` AS `id`,`projeto`.`titulo` AS `titulo`,`projeto`.`descricao` AS `descricao`,`projeto`.`status` AS `status`,`projeto`.`data_criacao` AS `data_criacao`,`projeto`.`criador_id` AS `criador_id`,`usuario`.`nome` AS `nome_responsavel`,max(`documento_versao`.`criado_em`) AS `ultima_atualizacao` from ((((`projeto` join `usuario` on((`usuario`.`id` = `projeto`.`criador_id`))) left join `categoria` on((`categoria`.`projeto_id` = `projeto`.`id`))) left join `documento` on((`documento`.`categoria_id` = `categoria`.`id`))) left join `documento_versao` on((`documento_versao`.`documento_id` = `documento`.`id`))) group by `projeto`.`id` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1599,7 +1588,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_reuniao_detalhes` AS select `r`.`id` AS `id`,`r`.`titulo` AS `titulo`,`r`.`criado_em` AS `criado_em`,`r`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('id',`l`.`id`,'url',`l`.`url`,'nome',`l`.`nome`,'tipo_link',(select `tl`.`nome` from `tipo_link` `tl` where (`tl`.`id` = `l`.`tipo_link_id`)))) from `link` `l` where (`l`.`reuniao_id` = `r`.`id`)),json_array()) AS `links`,coalesce((select json_arrayagg(json_object('id',`cr`.`id`,'cargo',`cr`.`cargo`,'nome',`cr`.`nome`)) from `convidado_reuniao` `cr` where (`cr`.`reuniao_id` = `r`.`id`)),json_array()) AS `convidados`,coalesce((select json_arrayagg(json_object('id',`u`.`id`,'cargo',`ru`.`cargo`,'nome',`u`.`nome`,'foto_perfil',`u`.`foto_perfil`)) from (`reuniao_usuario` `ru` join `usuario` `u` on((`u`.`id` = `ru`.`usuario_id`))) where (`ru`.`reuniao_id` = `r`.`id`)),json_array()) AS `usuarios` from `reuniao` `r` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1617,7 +1605,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_reunioes_com_usuarios` AS select `reuniao`.`id` AS `id`,`reuniao`.`titulo` AS `titulo`,`reuniao`.`criado_em` AS `criado_em`,`reuniao`.`projeto_id` AS `projeto_id`,coalesce((select json_arrayagg(`fotos`.`foto_perfil`) from (select `usuario`.`foto_perfil` AS `foto_perfil` from (`reuniao_usuario` join `usuario` on((`usuario`.`id` = `reuniao_usuario`.`usuario_id`))) where (`reuniao_usuario`.`reuniao_id` = `reuniao`.`id`) order by (`usuario`.`foto_perfil` is null),`usuario`.`id` limit 4) `fotos`),json_array()) AS `foto_usuarios` from `reuniao` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
@@ -1635,7 +1622,6 @@ DELIMITER ;
 /*!50001 SET character_set_results     = utf8mb4 */;
 /*!50001 SET collation_connection      = utf8mb4_0900_ai_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
-/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
 /*!50001 VIEW `vw_usuarios_projetos` AS select `projeto`.`id` AS `projeto_id`,coalesce((select json_arrayagg(json_object('usuario_id',`vw_participantes_projetos`.`usuario_id`,'nome',`vw_participantes_projetos`.`nome`,'email',`vw_participantes_projetos`.`email`,'foto_perfil',`vw_participantes_projetos`.`foto_perfil`,'usuario_projeto_id',`vw_participantes_projetos`.`usuario_projeto_id`,'projeto_id',`vw_participantes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_participantes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_participantes_projetos`.`nivel_acesso`)) from `vw_participantes_projetos` where (`vw_participantes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `participantes`,coalesce((select json_arrayagg(json_object('convite_id',`vw_convites_pendentes_projetos`.`convite_id`,'usuario_id',`vw_convites_pendentes_projetos`.`usuario_id`,'nome',`vw_convites_pendentes_projetos`.`nome`,'email',`vw_convites_pendentes_projetos`.`email`,'foto_perfil',`vw_convites_pendentes_projetos`.`foto_perfil`,'projeto_id',`vw_convites_pendentes_projetos`.`projeto_id`,'nivel_acesso_id',`vw_convites_pendentes_projetos`.`nivel_acesso_id`,'nivel_acesso',`vw_convites_pendentes_projetos`.`nivel_acesso`,'convidado_em',`vw_convites_pendentes_projetos`.`convidado_em`)) from `vw_convites_pendentes_projetos` where (`vw_convites_pendentes_projetos`.`projeto_id` = `projeto`.`id`)),json_array()) AS `pendentes` from `projeto` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
