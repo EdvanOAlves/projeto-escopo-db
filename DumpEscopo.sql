@@ -784,8 +784,8 @@ DELIMITER ;;
         SET deletado_em = CURRENT_DATE
         WHERE id = NEW.id;
         -- Seria interesante deixar uma foto reutilizavel pra isso, já serviria de indicação visual para os usuarios
+		DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
     END IF;
-    DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
 END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1650,4 +1650,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-10 10:38:40
+-- Dump completed on 2026-06-12  9:23:07

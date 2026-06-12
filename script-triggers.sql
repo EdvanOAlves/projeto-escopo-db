@@ -57,8 +57,8 @@ BEGIN
         SET deletado_em = CURRENT_DATE
         WHERE id = NEW.id;
         -- Seria interesante deixar uma foto reutilizavel pra isso, já serviria de indicação visual para os usuarios
+		DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
     END IF;
-    DELETE FROM usuario_projeto WHERE usuario_id = NEW.id;
 END$$
 
 CREATE TRIGGER trg_registro_update
